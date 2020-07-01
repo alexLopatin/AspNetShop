@@ -1,0 +1,20 @@
+﻿@inject HttpClient Http
+<h3>StockSlider</h3>
+@if (stocks != null)
+{
+    @foreach (Stock s in stocks)
+    {
+        <img src=@s.Banner />
+        <p>@s.Description</p>
+    }
+
+}
+
+
+@code {
+    private Stock[] stocks;
+    protected override async Task OnInitializedAsync()
+    {
+        stocks = await Http.GetFromJsonAsync<Stock[]>("Stock");
+    }
+}

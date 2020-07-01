@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <StockList>
+    <Stock>
+      <StockId>1</StockId>
+      <Description>Наслаждайтесь потрясающей графикой и испытайте новые функции PS5™.</Description>
+      <Banner>/Images/banner1.jpg</Banner>
+    </Stock>
+    <Stock>
+      <StockId>2</StockId>
+      <Description>О такой выгоде невозможно молчать! Громкая распродажа в Ситилинк – яркие предложения для тех, кто умеет выбирать лучшее. Скидки до 40% на технику и электронику.</Description>
+      <Banner>/Images/banner2.jpg</Banner>
+    </Stock>
+    <Stock>
+      <StockId>3</StockId>
+      <Description>ГРОМКАЯ РАСПРОДАЖА на ноутбуки Lenovo на базе процессоров AMD.</Description>
+      <Banner>/Images/banner3.jpg</Banner>
+    </Stock>
+  </StockList>
+</data>
