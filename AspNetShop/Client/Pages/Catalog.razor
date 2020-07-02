@@ -1,0 +1,28 @@
+﻿@page "/cat/{category:int}/{page:int}"
+@inject HttpClient Http
+<h3>Catalog @category </h3>
+
+@if(products != null)
+{
+    @foreach(Product p in products)
+    {
+        <div>
+            <p>@p.Name</p>
+            <p>@p.NewPrice Р</p>
+            <img src="/thumbs/@(p.Id).jpg"/>
+        </div>
+    }
+}
+
+@code {
+    Product[] products;
+    [Parameter]
+    public int category { get; set; }
+    [Parameter]
+    public int page { get; set; }
+    protected override async Task OnParametersSetAsync()
+    {
+        products = await Http.GetFromJsonAsync<Product[]>(String.Format("Catalog/LoadProducts?cat={0}&page={1}", category, page));
+
+    }
+}

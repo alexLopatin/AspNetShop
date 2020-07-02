@@ -7,10 +7,12 @@ using AspNetShop.Shared.ModelView;
 
 namespace AspNetShop.DummyServer.Controllers
 {
+    
     [ApiController]
-    [Route("[controller]")]
+    [Route("{controller}/{action=Get}")]
     public class CatalogController : ControllerBase
     {
+        const int CountOnPage = 5;
         private readonly DataLoader _loader;
         public CatalogController(DataLoader loader)
         {
@@ -21,6 +23,18 @@ namespace AspNetShop.DummyServer.Controllers
         {
             var list = _loader.Get<Category>();
             return list.ToArray();
+        }
+        [HttpGet]
+        public IEnumerable<Product> LoadProducts(int cat, int page)
+        {
+            page--;
+            var list = _loader.Get<Product>().Where(p => p.CategoryId == cat);
+            if (page < 0 || page * CountOnPage >= list.Count())
+                return null;
+            list = list.Skip(page*CountOnPage);
+            if (list.Count() > CountOnPage)
+                list = list.Take(CountOnPage);
+            return list;
         }
     }
 }

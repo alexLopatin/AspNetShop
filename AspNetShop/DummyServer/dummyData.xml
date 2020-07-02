@@ -39,4 +39,96 @@
       <Name>Канцтовары, мебель</Name>
     </Category>
   </CategoryList>
+  <ProductList>
+    <Product>
+      <Id>1</Id>
+      <CategoryId>1</CategoryId>
+      <Name>Смартфон SAMSUNG Galaxy A10 32Gb,  SM-A105F</Name>
+      <TimeAdded>05.06.2020</TimeAdded>
+      <OldPrice>8990</OldPrice>
+      <NewPrice>6990</NewPrice>
+      <Rating>4,5</Rating>
+    </Product>
+    <Product>
+      <Id>2</Id>
+      <CategoryId>1</CategoryId>
+      <Name>Смартфон HONOR 10i 128Gb,  синий</Name>
+      <TimeAdded>08.06.2020</TimeAdded>
+      <OldPrice>14990</OldPrice>
+      <NewPrice>14990</NewPrice>
+      <Rating>4,5</Rating>
+    </Product>
+    <Product>
+      <Id>3</Id>
+      <CategoryId>2</CategoryId>
+      <Name>Ноутбук ACER Aspire 7 A715-75G-56ZT</Name>
+      <TimeAdded>02.06.2020</TimeAdded>
+      <OldPrice>62990</OldPrice>
+      <NewPrice>57990</NewPrice>
+      <Rating>5</Rating>
+    </Product>
+    <Product>
+      <Id>4</Id>
+      <CategoryId>2</CategoryId>
+      <Name>Ультрабук ACER Swift 3 SF314-57-75NV</Name>
+      <TimeAdded>10.06.2020</TimeAdded>
+      <OldPrice>83990</OldPrice>
+      <NewPrice>79990</NewPrice>
+      <Rating>0</Rating>
+    </Product>
+    <Product>
+      <Id>5</Id>
+      <CategoryId>3</CategoryId>
+      <Name>LED телевизор DIGMA DM-LED32MQ10 HD READY</Name>
+      <TimeAdded>25.06.2020</TimeAdded>
+      <OldPrice>7190</OldPrice>
+      <NewPrice>6490</NewPrice>
+      <Rating>3</Rating>
+    </Product>
+    <Product>
+      <Id>6</Id>
+      <CategoryId>3</CategoryId>
+      <Name>LED телевизор XIAOMI Mi TV 4S 43 Ultra HD 4K</Name>
+      <TimeAdded>22.06.2020</TimeAdded>
+      <OldPrice>24990</OldPrice>
+      <NewPrice>24990</NewPrice>
+      <Rating>4</Rating>
+    </Product>
+    <Product>
+      <Id>7</Id>
+      <CategoryId>4</CategoryId>
+      <Name>Цифровой фотоаппарат CANON IXUS 185,  черный</Name>
+      <TimeAdded>01.06.2020</TimeAdded>
+      <OldPrice>7840</OldPrice>
+      <NewPrice>7840</NewPrice>
+      <Rating>4,5</Rating>
+    </Product>
+    <Product>
+      <Id>8</Id>
+      <CategoryId>4</CategoryId>
+      <Name>Зеркальный фотоаппарат CANON EOS 2000D kit</Name>
+      <TimeAdded>05.06.2020</TimeAdded>
+      <OldPrice>26990</OldPrice>
+      <NewPrice>26990</NewPrice>
+      <Rating>5</Rating>
+    </Product>
+    <Product>
+      <Id>9</Id>
+      <CategoryId>5</CategoryId>
+      <Name>Стол игровой  СОКОЛ КСТ-18,  белый</Name>
+      <TimeAdded>05.06.2020</TimeAdded>
+      <OldPrice>5600</OldPrice>
+      <NewPrice>5600</NewPrice>
+      <Rating>4,5</Rating>
+    </Product>
+    <Product>
+      <Id>10</Id>
+      <CategoryId>5</CategoryId>
+      <Name>Настенные часы HAMA AG-300 H-113982</Name>
+      <TimeAdded>30.06.2020</TimeAdded>
+      <OldPrice>2667</OldPrice>
+      <NewPrice>2070</NewPrice>
+      <Rating>4,5</Rating>
+    </Product>
+  </ProductList>
 </data>
