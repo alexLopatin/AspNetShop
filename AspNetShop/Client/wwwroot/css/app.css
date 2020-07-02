@@ -84,7 +84,7 @@ app {
             height: 3rem;
             display: flex;
             align-items: center;
-            line-height: 3rem;
+            
         }
 
             .sidebar .nav-item a.active {
@@ -156,7 +156,7 @@ app {
     }
 
     .sidebar {
-        width: 250px;
+        width: 170px;
         height: 100vh;
         position: sticky;
         top: 0;
@@ -180,4 +180,70 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+#slider {
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto 0 auto;
+    border-radius: 14px;
+    display:inline-block;
+    width: initial;
+    height: auto;
+}
+#slider #content {
+    background: rgb(5, 39, 103);
+    display:inline-block;
+    transition:ease-out;
+    transition-duration: 1s;
+}
+
+a.control_prev, a.control_next {
+    position: absolute;
+    z-index: 999;
+    display: inline-block;
+    padding: 2% 1%;
+    width: auto;
+    height: auto;
+    background: #2a2a2a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 100;
+    font-size: 18px;
+    opacity: 0.8;
+    cursor: pointer;
+    top: 50%;
+    transform: translate(0, -50%)
+}
+
+    a.control_prev:hover, a.control_next:hover {
+        opacity: 1;
+        -webkit-transition: all 0.2s ease;
+    }
+
+a.control_prev {
+    border-radius: 0 2px 2px 0;
+}
+
+a.control_next {
+    right: 0;
+    border-radius: 2px 0 0 2px;
+}
+
+.search-box > * {
+    display: inline-block;
+}
+
+.search-box > form > input {
+    background: transparent;
+    border: none;
+    
+}
+    .search-box > form > input:focus {
+        outline: none;
+    }
+.search-box {
+    background-color: lightgray;
+    border-radius: 4px;
+    padding: 4px;
 }

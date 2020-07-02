@@ -17,4 +17,26 @@
       <Banner>/Images/banner3.jpg</Banner>
     </Stock>
   </StockList>
+  <CategoryList>
+    <Category>
+      <Id>1</Id>
+      <Name>Смартфоны и гаджеты</Name>
+    </Category>
+    <Category>
+      <Id>2</Id>
+      <Name>Ноутбуки и компьютеры</Name>
+    </Category>
+    <Category>
+      <Id>3</Id>
+      <Name>Телевизоры, Hi-Fi</Name>
+    </Category>
+    <Category>
+      <Id>4</Id>
+      <Name>Фото, видео</Name>
+    </Category>
+    <Category>
+      <Id>5</Id>
+      <Name>Канцтовары, мебель</Name>
+    </Category>
+  </CategoryList>
 </data>

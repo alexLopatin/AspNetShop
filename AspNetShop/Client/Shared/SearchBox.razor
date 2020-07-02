@@ -1,0 +1,10 @@
+﻿<div class="search-box">
+    <img src="mgnf.png" style="width: 35px" />
+    <EditForm Model="@TextProperty">
+        <InputText @bind-Value="@TextProperty" placeholder="Поиск товара"></InputText>
+    </EditForm>
+</div>
+
+@code {
+    string TextProperty = "";
+}

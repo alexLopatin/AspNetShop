@@ -1,20 +1,39 @@
 ﻿@inject HttpClient Http
-<h3>StockSlider</h3>
+
 @if (stocks != null)
 {
-    @foreach (Stock s in stocks)
-    {
-        <img src=@s.Banner />
-        <p>@s.Description</p>
-    }
+    <div>
+        <div id="slider">
+            <a href="#" class="control_next" @onclick="Next">@(">") </a>
+            <a href="#" class="control_prev" @onclick="Prev"> @("<") </a>
+            <div id="content">
+                <img src=@stocks[i].Banner />
 
+            </div>
+        </div>
+        <p>@stocks[i].Description</p>
+    </div>
 }
 
 
 @code {
+    int i = 0;
     private Stock[] stocks;
+    void Next()
+    {
+        i = (i + 1) % stocks.Count();
+    }
+    void Prev()
+    {
+        if (i == 0)
+            i = stocks.Count() - 1;
+        else
+            i--;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         stocks = await Http.GetFromJsonAsync<Stock[]>("Stock");
+        
     }
 }
