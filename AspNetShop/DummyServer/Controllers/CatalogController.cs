@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspNetShop.Shared.ModelView;
+using System.IO;
 
 namespace AspNetShop.DummyServer.Controllers
 {
@@ -35,6 +36,28 @@ namespace AspNetShop.DummyServer.Controllers
             if (list.Count() > CountOnPage)
                 list = list.Take(CountOnPage);
             return list;
+        }
+
+        [HttpGet]
+        public string GetName(int cat)
+        {
+            var list = _loader.Get<Category>();
+            return list.Find(c => c.Id == cat).Name;
+        }
+
+        [HttpGet]
+        public Product GetProduct(int id)
+        {
+            var list = _loader.Get<Product>();
+            return list.Find(c => c.Id == id);
+        }
+        [HttpGet]
+        public string GetProductDescription(int id)
+        {
+            if (System.IO.File.Exists(String.Format("ProductDescriptions/{0}.html", id)))
+                return System.IO.File.ReadAllText(String.Format("ProductDescriptions/{0}.html", id));
+            else
+                return "";
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿@page "/Prod/{id:int}"
+@inject HttpClient Http
+
+
+@if (p != null)
+{
+
+    <h3 class="product-name">@p.Name</h3>
+    <div class="rate-cash-info">
+        <div class="rating">
+            @for (int i = 0; i < p.Rating; i++)
+            {
+                <span class="oi oi-star" style="display:inline-block; color:indigo;"></span>
+            }
+            @for (int i = (int)Math.Ceiling(p.Rating); i < 5; i++)
+            {
+                <span class="oi oi-star" style="display:inline-block; color:lightgray;"></span>
+            }
+        </div>
+        @if (p.OldPrice > p.NewPrice)
+        {
+            <p>@(newPrice) ₽  <strike>@(oldPrice) ₽</strike> </p>
+        }
+        else
+        {
+            <p>@(newPrice) ₽</p>
+        }
+        <input type="number" min="1" max="999" @bind=count style="width:54px">
+        <button class="to-cart">В корзину</button>
+    </div>
+}
+<div class="description">
+    @((MarkupString)description)
+</div>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    int _count = 1;
+    int count
+    {
+        get { return _count; }
+        set
+        {
+            _count = Math.Clamp( value,1,999);
+            oldPrice = p.OldPrice * count;
+            newPrice = p.NewPrice * count;
+        }
+    }
+    double oldPrice = 1;
+    double newPrice = 1;
+    Product p;
+    string description = "";
+    protected override async Task OnParametersSetAsync()
+    {
+        p = await Http.GetFromJsonAsync<Product>(String.Format("Catalog/GetProduct?id={0}", id));
+        description = await Http.GetStringAsync(String.Format("Catalog/GetProductDescription?id={0}", id));
+        newPrice = p.NewPrice;
+        oldPrice = p.OldPrice;
+    }
+}

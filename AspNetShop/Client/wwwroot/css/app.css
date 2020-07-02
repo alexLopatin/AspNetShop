@@ -247,3 +247,51 @@ a.control_next {
     border-radius: 4px;
     padding: 4px;
 }
+.product-short {
+    border:solid;
+    border-width: 1px;
+    border-color:slateblue;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    max-width:600px;
+    line-height: 15px;
+}
+.product-short .rating {
+    margin-bottom: 16px;
+    
+}
+.oi-star {
+    z-index: -1;
+}
+
+.product-short p {
+    font-size: 18px;
+}
+
+.product-short strike {
+    color:grey;
+}
+.rate-cash-info {
+    font-size: 18px;
+    float: right;
+}
+.product-name {
+
+    float: left;
+}
+.rate-cash-info strike {
+    color: grey;
+}
+
+.to-cart {
+    background-color: indigo;
+    color: white;
+    border:hidden;
+    border-radius: 5px;
+    padding:10px;
+}
+
+.description {
+    display:inline-block;
+}
