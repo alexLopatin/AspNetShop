@@ -24,6 +24,7 @@ app {
     height: 3.5rem;
     display: flex;
     align-items: center;
+    z-index:999;
 }
 
 .main {
@@ -184,22 +185,27 @@ app {
 
 #slider {
     position: relative;
-    overflow: hidden;
+    overflow:hidden;
     margin: 20px auto 0 auto;
     border-radius: 14px;
     display: inline-block;
-    width: initial;
-    height: auto;
     clear: both;
-    z-index:10;
-}
-#slider #content {
-    background: rgb(5, 39, 103);
-    display:inline-block;
+    z-index: 10;
 }
 
+    #slider #content {
+        background-color:lightgray;
+        display: inline-block;
+    }
+    #slider #content img {
+        height: 100%;
+        width: 100%;
+        display: block;
+        object-fit: contain;
+    }
+
 a.control_prev, a.control_next {
-    position:absolute;
+    position: absolute;
     padding: 2% 1%;
     width: auto;
     height: auto;
@@ -211,8 +217,13 @@ a.control_prev, a.control_next {
     opacity: 0.8;
     cursor: pointer;
     top: 50%;
-    transform: translate(0, -50%)
+    transform: translate(0, -50%);
 }
+
+
+    a.control_prev:not([href]):not([tabindex]), a.control_next:not([href]):not([tabindex]) {
+        color: #fff;
+    }
 
     a.control_prev:hover, a.control_next:hover {
         opacity: 1;
@@ -304,5 +315,4 @@ a.control_next {
     border-radius: 4px;
     border-color: indigo;
     padding: 10px;
-    z-index: 11;
 }

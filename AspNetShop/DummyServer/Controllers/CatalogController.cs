@@ -68,6 +68,11 @@ namespace AspNetShop.DummyServer.Controllers
             return list.ToArray();
         }
         [HttpGet]
+        public string[] GetImagesProduct(int id)
+        {
+            return new string[4] { "images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg" };
+        }
+        [HttpGet]
         public ProductList FindProducts(string pattern, int page)
         {
             page--;

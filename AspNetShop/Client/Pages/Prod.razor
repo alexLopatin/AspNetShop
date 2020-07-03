@@ -28,11 +28,13 @@
         <input type="number" min="1" max="999" @bind=count style="width:54px">
         <button class="to-cart">В корзину</button>
     </div>
+    <Slider Images="images" Height="800" Width="800" />
 }
 <div class="description">
     @((MarkupString)description)
 </div>
 @code {
+    public string[] images;
     [Parameter]
     public int id { get; set; }
     int _count = 1;
@@ -41,7 +43,7 @@
         get { return _count; }
         set
         {
-            _count = Math.Clamp( value,1,999);
+            _count = Math.Clamp(value, 1, 999);
             oldPrice = p.OldPrice * count;
             newPrice = p.NewPrice * count;
         }
@@ -56,5 +58,7 @@
         description = await Http.GetStringAsync(String.Format("Catalog/GetProductDescription?id={0}", id));
         newPrice = p.NewPrice;
         oldPrice = p.OldPrice;
+        images = await Http.GetFromJsonAsync<string[]>(String.Format("Catalog/GetImagesProduct?id={0}", p.Id));
+
     }
 }

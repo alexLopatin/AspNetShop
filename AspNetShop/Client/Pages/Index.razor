@@ -1,3 +1,13 @@
 ﻿@page "/"
 
-<StockSlider />
+<Slider Images="banners" />
+@inject HttpClient Http
+@code {
+    private Stock[] stocks;
+    private string[] banners;
+    protected override async Task OnInitializedAsync()
+    {
+        stocks = await Http.GetFromJsonAsync<Stock[]>("Stock");
+        banners = stocks.Select(s => s.Banner).ToArray();
+    }
+}

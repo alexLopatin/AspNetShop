@@ -21,5 +21,6 @@
         var response = await Http.GetAsync(String.Format("Catalog/GetName?cat={0}", category));
         name = await response.Content.ReadAsStringAsync();
         products = await Http.GetFromJsonAsync<ProductList>(String.Format("Catalog/LoadProducts?cat={0}&page={1}", category, page));
+        
     }
 }

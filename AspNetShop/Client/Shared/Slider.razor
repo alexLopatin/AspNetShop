@@ -1,0 +1,47 @@
+﻿@inject HttpClient Http
+
+@if (Images != null)
+{
+    <div>
+        <div id="slider"  >
+            <a class="control_next" @onclick="Next">@(">") </a>
+            <a class="control_prev" @onclick="Prev"> @("<") </a>
+            <div id="content" style="@StyleParam">
+                <img src="@Images[i]" />
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int Width { get; set; } = 0;
+    [Parameter]
+    public int Height { get; set; } = 0;
+    string StyleParam
+    {
+        get
+        {
+            if(Width != 0 && Height != 0)
+                return String.Format("width: {0}px; height: {1}px;", Width, Height);
+            else
+                return "";
+        }
+    }
+    [Parameter]
+    public string[] Images { get; set; }
+    int i = 0;
+    void Next()
+    {
+        i = (i + 1) % Images.Count();
+    }
+    void Prev()
+    {
+        if (i == 0)
+            i = Images.Count() - 1;
+        else
+            i--;
+    }
+}
