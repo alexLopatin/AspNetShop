@@ -1,0 +1,19 @@
+﻿@page "/srch/{query}/{page:int}"
+<h3>Результат поиска по запросу «@query»</h3>
+
+<ListViewer page="page" products="products" FormatLink=@("/srch/" + query + "/{0}/") >
+
+</ListViewer>
+
+@inject HttpClient Http
+@code {
+    [Parameter]
+    public string query { get; set; }
+    [Parameter]
+    public int page { get; set; }
+    ProductList products;
+    protected override async Task OnParametersSetAsync()
+    {
+        products = await Http.GetFromJsonAsync<ProductList>(String.Format("Catalog/FindProducts?pattern={0}&page={1}", query, page));
+    }
+}

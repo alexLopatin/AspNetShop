@@ -1,0 +1,92 @@
+﻿
+@if (products != null)
+{
+    @if (products.Products.Count() == 0)
+    {
+        <p style="font-size:18px;">Ничего не найдено.</p>
+    }
+    @foreach (Product p in products.Products)
+    {
+        <div class="product-short">
+            <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
+            <div class="rating">
+                @for (int i = 0; i < p.Rating; i++)
+                {
+                    <span class="oi oi-star" style="display:inline-block; color:indigo;"></span>
+                }
+                @for (int i = (int)Math.Ceiling(p.Rating); i < 5; i++)
+                {
+                    <span class="oi oi-star" style="display:inline-block; color:lightgray;"></span>
+                }
+            </div>
+            @if (p.OldPrice > p.NewPrice)
+            {
+                <p>@p.NewPrice ₽  <strike>@p.OldPrice ₽</strike> </p>
+            }
+            else
+            {
+                <p>@p.NewPrice ₽</p>
+            }
+
+
+            <img src="/thumbs/@(p.Id).jpg" />
+        </div>
+
+    }
+    <div style="margin:50px; font-size: 18px;">
+        @if (products.CountOfPages <= 10)
+        {
+            <a style="margin:10px;">Страницы:</a>
+            @for (int i = 1; i <= products.CountOfPages; i++)
+            {
+
+                @if (i != page)
+                {
+                    <a style="margin:10px;" href="@String.Format(FormatLink, i)">@i</a>
+                }
+                else
+                {
+                    <a style="margin:10px;">@i</a>
+                }
+            }
+        }
+        else
+        {
+            <a style="margin:10px;">Страницы:</a>
+            @if (page > 2)
+            {
+                <a style="margin:10px;">...</a>
+            }
+            @for (int i = (page > 1 ? page - 1 : page); i <= Math.Min(page + 5, products.CountOfPages); i++)
+            {
+
+                @if (i != page)
+                {
+                    <a style="margin:10px;" href="@String.Format(FormatLink, i)">@i</a>
+                }
+                else
+                {
+                    <a style="margin:10px;">@i</a>
+                }
+            }
+            @if (page + 5 < products.CountOfPages - 1)
+            {
+                <a style="margin:10px;">...</a>
+            }
+            @if (page + 5 < products.CountOfPages)
+            {
+                <a style="margin:10px;" href="@String.Format(FormatLink, products.CountOfPages)">@products.CountOfPages</a>
+            }
+        }
+
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string FormatLink { get; set; }
+    [Parameter]
+    public int page { get; set; }
+    [Parameter]
+    public ProductList products { get; set; }
+}

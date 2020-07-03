@@ -26,16 +26,17 @@ namespace AspNetShop.DummyServer.Controllers
             return list.ToArray();
         }
         [HttpGet]
-        public IEnumerable<Product> LoadProducts(int cat, int page)
+        public ProductList LoadProducts(int cat, int page)
         {
             page--;
             var list = _loader.Get<Product>().Where(p => p.CategoryId == cat);
-            if (page < 0 || page * CountOnPage >= list.Count())
-                return null;
+            ProductList pl = new ProductList();
+            pl.CountOfPages = (int)Math.Ceiling((double)list.Count() / CountOnPage);
             list = list.Skip(page*CountOnPage);
             if (list.Count() > CountOnPage)
                 list = list.Take(CountOnPage);
-            return list;
+            pl.Products = list;
+            return pl;
         }
 
         [HttpGet]
@@ -58,6 +59,30 @@ namespace AspNetShop.DummyServer.Controllers
                 return System.IO.File.ReadAllText(String.Format("ProductDescriptions/{0}.html", id));
             else
                 return "";
+        }
+        [HttpGet]
+        public IEnumerable<Product> ShortFindProducts(string pattern)
+        {
+            Random rnd = new Random();
+            var list = _loader.Get<Product>().OrderBy(x => rnd.Next()).Take(4);
+            return list.ToArray();
+        }
+        [HttpGet]
+        public ProductList FindProducts(string pattern, int page)
+        {
+            page--;
+            var list = _loader.Get<Product>().AsEnumerable();
+            ProductList pl = new ProductList();
+            pl.CountOfPages = (int)Math.Ceiling((double)list.Count() / CountOnPage);
+            //if (page < 0 || page * CountOnPage >= list.Count())
+            //    list.
+            list = list.Skip(page * CountOnPage);
+            if (list.Count() > CountOnPage)
+                list = list.Take(CountOnPage);
+           
+            pl.Products = list;
+            
+            return pl;
         }
     }
 }

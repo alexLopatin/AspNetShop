@@ -187,21 +187,19 @@ app {
     overflow: hidden;
     margin: 20px auto 0 auto;
     border-radius: 14px;
-    display:inline-block;
+    display: inline-block;
     width: initial;
     height: auto;
+    clear: both;
+    z-index:10;
 }
 #slider #content {
     background: rgb(5, 39, 103);
     display:inline-block;
-    transition:ease-out;
-    transition-duration: 1s;
 }
 
 a.control_prev, a.control_next {
-    position: absolute;
-    z-index: 999;
-    display: inline-block;
+    position:absolute;
     padding: 2% 1%;
     width: auto;
     height: auto;
@@ -234,12 +232,12 @@ a.control_next {
     display: inline-block;
 }
 
-.search-box > form > input {
+.search-box > input {
     background: transparent;
     border: none;
     
 }
-    .search-box > form > input:focus {
+    .search-box > input:focus {
         outline: none;
     }
 .search-box {
@@ -294,4 +292,17 @@ a.control_next {
 
 .description {
     display:inline-block;
+}
+#slider > * > *{
+    z-index: 10;
+}
+.search-result {
+    background-color: whitesmoke;
+    position: absolute;
+    border: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: indigo;
+    padding: 10px;
+    z-index: 11;
 }

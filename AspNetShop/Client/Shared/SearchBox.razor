@@ -1,10 +1,54 @@
-﻿<div class="search-box">
-    <span class="oi oi-magnifying-glass" style="padding:5px 10px 0px 10px"></span>
-    <EditForm Model="@TextProperty">
-        <InputText @bind-Value="@TextProperty" placeholder="Поиск товара"></InputText>
-    </EditForm>
+﻿<div>
+    <div class="search-box">
+        <span class="oi oi-magnifying-glass" style="padding:5px 10px 0px 10px"></span>
+        <input type="text" @bind-value:event="oninput" @bind-value="TextProperty" @onkeydown="UpdateValue" @onfocusout="FocusOut" @onfocusin="FocusIn" placeholder="Поиск товара">
+    </div>
+    @if (foundProducts != null)
+    {
+        <div class="search-result" style="visibility: @visibility">
+            @foreach (Product p in foundProducts)
+            {
+                <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All" style="display:block; padding-bottom:10px; padding-top:10px;">@p.Name</NavLink>
+            }
+        </div>
+    }
+
 </div>
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 @code {
-    string TextProperty = "";
+    [Parameter]
+    public string TextProperty { get; set; } = "";
+    bool needToFind = false;
+    string visibility = "hidden";
+    async Task FocusOut()
+    {
+        await Task.Delay(200);
+        visibility = "hidden";
+    }
+    void FocusIn()
+    {
+        visibility = "visible";
+    }
+
+    async Task UpdateValue(KeyboardEventArgs e)
+    {
+        if(e.Key =="Enter")
+        {
+            NavigationManager.NavigateTo(String.Format("srch/{0}/{1}", TextProperty, 1));
+            return;
+        }
+        needToFind = true;
+        await Task.Delay(1000);
+        if (needToFind)
+        {
+            needToFind = false;
+            if (TextProperty == "")
+                foundProducts = null;
+            else
+                foundProducts = await Http.GetFromJsonAsync<Product[]>(String.Format("Catalog/ShortFindProducts?pattern={0}", TextProperty));
+        }
+    }
+    Product[] foundProducts;
 }
