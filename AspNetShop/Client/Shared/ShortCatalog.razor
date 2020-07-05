@@ -1,0 +1,41 @@
+﻿
+@if (Products != null)
+{
+<div class="short-container">
+    @if (Products.Count() == 0)
+    {
+        <p style="font-size:18px;">Ничего не найдено.</p>
+    }
+    @foreach (Product p in Products)
+    {
+        <div class="product-short short-view">
+            <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
+            <div class="rating">
+                @for (int i = 0; i < p.Rating; i++)
+                {
+                    <span class="oi oi-star" style="display:inline-block; color:indigo;"></span>
+                }
+                @for (int i = (int)Math.Ceiling(p.Rating); i < 5; i++)
+                {
+                    <span class="oi oi-star" style="display:inline-block; color:lightgray;"></span>
+                }
+            </div>
+            @if (p.OldPrice > p.NewPrice)
+            {
+                <p>@p.NewPrice ₽  <strike>@p.OldPrice ₽</strike> </p>
+            }
+            else
+            {
+                <p>@p.NewPrice ₽</p>
+            }
+
+
+            <img src="/thumbs/@(p.Id).jpg" />
+        </div>
+    }
+</div>
+}
+@code {
+    [Parameter]
+    public Product[] Products { get; set; }
+}

@@ -1,13 +1,28 @@
 ﻿@page "/"
 
+    <h3>Акции</h3>
+
 <Slider Images="banners" />
+<h3>Топ продаж</h3>
+<ShortCatalog Products="_top">
+
+</ShortCatalog>
+
+<h3>Новинки</h3>
+<ShortCatalog Products="_new">
+
+</ShortCatalog>
 @inject HttpClient Http
 @code {
     private Stock[] stocks;
+    private Product[] _top;
+    private Product[] _new;
     private string[] banners;
     protected override async Task OnInitializedAsync()
     {
         stocks = await Http.GetFromJsonAsync<Stock[]>("Stock");
+        _top = await Http.GetFromJsonAsync<Product[]>("Catalog/ShortTopProducts");
+        _new = await Http.GetFromJsonAsync<Product[]>("Catalog/ShortNewProducts");
         banners = stocks.Select(s => s.Banner).ToArray();
     }
 }

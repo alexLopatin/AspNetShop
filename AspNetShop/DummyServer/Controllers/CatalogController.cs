@@ -79,15 +79,23 @@ namespace AspNetShop.DummyServer.Controllers
             var list = _loader.Get<Product>().AsEnumerable();
             ProductList pl = new ProductList();
             pl.CountOfPages = (int)Math.Ceiling((double)list.Count() / CountOnPage);
-            //if (page < 0 || page * CountOnPage >= list.Count())
-            //    list.
             list = list.Skip(page * CountOnPage);
             if (list.Count() > CountOnPage)
                 list = list.Take(CountOnPage);
-           
             pl.Products = list;
-            
             return pl;
+        }
+        [HttpGet]
+        public IEnumerable<Product> ShortNewProducts()
+        {
+            var list = _loader.Get<Product>().OrderBy(x => x.TimeAdded).Take(6);
+            return list.ToArray();
+        }
+        [HttpGet]
+        public IEnumerable<Product> ShortTopProducts()
+        {
+            var list = _loader.Get<Product>().OrderBy(x => x.Rating).Take(6);
+            return list.ToArray();
         }
     }
 }

@@ -316,3 +316,50 @@ a.control_next {
     border-color: indigo;
     padding: 10px;
 }
+
+.product-short.short-view {
+    display: inline-block;
+}
+
+.product-short.short-view > a > p {
+    width:200px;
+    line-height:25px;
+    height:50px;
+    overflow:hidden;
+}
+.product-short.short-view > img {
+    height: 100px;
+    width: 100px;
+    display: block;
+    object-fit: contain;
+}
+.product-short.short-view > * {
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+}
+.short-container {
+    overflow: hidden;
+    text-align: center;
+    max-height: 260px;
+    margin:5px;
+}
+.footer {
+    margin-top:150px;
+    padding: 50px;
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(205,205,205,1) 74%, rgba(152,152,152,1) 100%);
+}
+
+.footer > table {
+    display: table;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  line-height:40px;
+  font-size:18px;
+}
+
+.footer > table > tbody > td{
+    width: 25%;
+}
