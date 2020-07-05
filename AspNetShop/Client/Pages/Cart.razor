@@ -1,0 +1,81 @@
+﻿@page "/crt"
+@inject ILocalStorageService LocalStore
+@inject HttpClient Http
+
+
+<h3>Корзина</h3>
+<div class="cart-list">
+    @if (products != null)
+    {
+        @if (products.Count() == 0)
+        {
+            <p style="font-size:18px;">Корзина пуста.</p>
+        }
+        else
+        {
+            <p><b>1.</b> Сборка заказа:</p>
+            @foreach (Product p in products)
+            {
+                <div class="product-short">
+                    <a style="float:right; cursor: pointer;" @onclick="(() => RemoveItem(p.Id))">🗙</a>
+                    <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
+                    <input type="number" min="1" max="999" value="@dict[p.Id.ToString()]" @onchange="((e) => ChangeCount(e,p.Id))" style="width:54px">
+                    @if (p.OldPrice > p.NewPrice)
+                    {
+                        <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽  <strike>@(p.OldPrice*dict[p.Id.ToString()]) ₽</strike> </p>
+                    }
+                    else
+                    {
+                        <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽</p>
+                    }
+
+
+                    <img src="/thumbs/@(p.Id).jpg" />
+                </div>
+
+            }
+            <p>Заказ на сумму <b>@price  ₽</b>.</p>
+        }
+
+    }
+    else
+    {
+        <p style="font-size:18px;">Корзина пуста.</p>
+    }
+</div>
+@code {
+    Product[] products;
+    Dictionary<string, int> dict;
+    long price = 0;
+    private async Task ChangeCount(ChangeEventArgs e, int id)
+    {
+        int oldVal = dict[id.ToString()];
+        int newVal = Convert.ToInt32(e.Value);
+        newVal = Math.Clamp(newVal, 1, 999);
+        price += (newVal - oldVal) * (long)products.First(x => x.Id == id).NewPrice;
+        dict[id.ToString()] = newVal;
+        await LocalStore.SetItemAsync("cart", dict);
+        await LocalStore.SetItemAsync("cartPrice", price);
+    }
+    private async Task RemoveItem(int id)
+    {
+        price -= dict[id.ToString()] * (long)products.First(x => x.Id == id).NewPrice;
+        dict.Remove(id.ToString());
+        products = products.Where(x => x.Id != id).ToArray();
+        await LocalStore.SetItemAsync("cart", dict);
+        await LocalStore.SetItemAsync("cartPrice", price);
+        //await Task.Delay(2000);
+        //this.StateHasChanged();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        dict = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
+        price = await LocalStore.GetItemAsync<int>("cartPrice");
+        if(dict!=null)
+        {
+            var response = await Http.PostAsJsonAsync("/cart/get", dict);
+            products = await response.Content.ReadFromJsonAsync<Product[]>();
+        }
+
+    }
+}

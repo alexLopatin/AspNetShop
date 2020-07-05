@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorAnimate" Version="2.0.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="2.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
   </ItemGroup>
 

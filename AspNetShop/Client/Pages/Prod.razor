@@ -1,5 +1,6 @@
 ﻿@page "/Prod/{id:int}"
 @inject HttpClient Http
+@inject ILocalStorageService LocalStore
 
 
 @if (p != null)
@@ -26,7 +27,7 @@
             <p>@(newPrice) ₽</p>
         }
         <input type="number" min="1" max="999" @bind=count style="width:54px">
-        <button class="to-cart">В корзину</button>
+        <button class="to-cart" @onclick="AddToCart">В корзину</button>
     </div>
     <Slider Images="images" Height="800" Width="800" />
 }
@@ -52,6 +53,19 @@
     double newPrice = 1;
     Product p;
     string description = "";
+    protected async Task AddToCart()
+    {
+        var items = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
+        long price = await LocalStore.GetItemAsync<int>("cartPrice");
+        if (items == null)
+            items = new Dictionary<string, int>();
+        if (!items.ContainsKey(p.Id.ToString()))
+            items[p.Id.ToString()] = 0;
+        items[p.Id.ToString()]+= count;
+        price += count * (long)p.NewPrice;
+        await LocalStore.SetItemAsync("cart", items);
+        await LocalStore.SetItemAsync("cartPrice", price);
+    }
     protected override async Task OnParametersSetAsync()
     {
         p = await Http.GetFromJsonAsync<Product>(String.Format("Catalog/GetProduct?id={0}", id));

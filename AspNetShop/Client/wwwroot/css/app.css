@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100%;
 }
 
 a, .btn-link {
@@ -29,6 +30,8 @@ app {
 
 .main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
     .main .top-row {
@@ -345,7 +348,8 @@ a.control_next {
     margin:5px;
 }
 .footer {
-    margin-top:150px;
+    flex: 1;
+    margin-top: 150px;
     padding: 50px;
     background: rgb(255,255,255);
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(205,205,205,1) 74%, rgba(152,152,152,1) 100%);
@@ -362,4 +366,31 @@ a.control_next {
 
 .footer > table > tbody > td{
     width: 25%;
+}
+
+.cart-link {
+    font-size: 18px;
+    color: indigo;
+}
+.cart-link:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.cart-list > .product-short {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.cart-list > .product-short > input {
+    float: right;
+}
+
+.cart-list{
+    margin-top:100px;
+}
+
+.cart-list > p {
+    margin-top:25px;
+    text-align:center;
 }

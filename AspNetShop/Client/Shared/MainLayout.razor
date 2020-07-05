@@ -1,33 +1,83 @@
 ﻿@inherits LayoutComponentBase
+@inject ILocalStorageService LocalStore
 
 <div class="sidebar">
     <NavMenu />
 </div>
 
 <div class="main">
-    
+
     <div class="top-row px-4">
         <SearchBox></SearchBox>
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <NavLink href="/crt" class="ml-md-auto cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> @CartString </NavLink>
+
+
     </div>
 
     <div class="content px-4">
         @Body
     </div>
-    <div class="footer px-4">
-        <table>
-            <tr>
-                <td>КОМПАНИЯ</td>
-                <td>ПОМОЩЬ</td>
-                <td>ОБСЛУЖИВАНИЕ</td>
-                <td>РАЗНОЕ</td>
-            </tr>
-            <tr>
-                <td><a href="#">Новости</a></td>
-                <td><a href="#">Обратная связь</a></td>
-                <td><a href="#">Сервисные центры</a></td>
-                <td><a href="#">Акции</a></td>
-            </tr>
-        </table>
-    </div>
+    @if (Body != null)
+    {
+
+
+        <div class="footer px-4">
+            <table>
+                <tr>
+                    <td>КОМПАНИЯ</td>
+                    <td>ПОМОЩЬ</td>
+                    <td>ОБСЛУЖИВАНИЕ</td>
+                    <td>РАЗНОЕ</td>
+                </tr>
+                <tr>
+                    <td><a href="#">Новости</a></td>
+                    <td><a href="#">Обратная связь</a></td>
+                    <td><a href="#">Сервисные центры</a></td>
+                    <td><a href="#">Акции</a></td>
+                </tr>
+            </table>
+        </div>
+    }
 </div>
+
+@code {
+    private Dictionary<string, int> cart;
+    private int CountCart = 0;
+    private long cartPrice = 0;
+    public string CartString
+    {
+        get
+        {
+            if (CountCart == 0)
+                return "Корзина пуста";
+            if (CountCart > 4)
+                return String.Format("{0} товаров {1} ₽", CountCart, cartPrice);
+            if (CountCart > 1)
+                return String.Format("{0} товара {1} ₽", CountCart, cartPrice);
+            return String.Format("{0} товар {1} ₽", CountCart, cartPrice);
+        }
+    }
+    private int GetCount()
+    {
+        int res = 0;
+        if (cart == null)
+            return res;
+        foreach (var item in cart)
+            res += item.Value;
+        return res;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        cart = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
+        CountCart = GetCount();
+        cartPrice = await LocalStore.GetItemAsync<long>("cartPrice");
+        LocalStore.Changed += async (x,e) =>
+        {
+            cart = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
+            CountCart = GetCount();
+            cartPrice = await LocalStore.GetItemAsync<long>("cartPrice");
+            this.StateHasChanged();
+        };
+    }
+
+}

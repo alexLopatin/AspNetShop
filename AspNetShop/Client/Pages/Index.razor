@@ -18,11 +18,13 @@
     private Product[] _top;
     private Product[] _new;
     private string[] banners;
+
     protected override async Task OnInitializedAsync()
     {
         stocks = await Http.GetFromJsonAsync<Stock[]>("Stock");
         _top = await Http.GetFromJsonAsync<Product[]>("Catalog/ShortTopProducts");
         _new = await Http.GetFromJsonAsync<Product[]>("Catalog/ShortNewProducts");
         banners = stocks.Select(s => s.Banner).ToArray();
+
     }
 }
