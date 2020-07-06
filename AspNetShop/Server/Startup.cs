@@ -6,6 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using AspNetShop.Server.Domain;
+using AspNetShop.Server.Domain.Repositories.Abstract;
+using AspNetShop.Server.Domain.Repositories.EntityFramework;
+using AspNetShop.Server.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetShop.Server
 {
@@ -22,8 +29,36 @@ namespace AspNetShop.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            Configuration.Bind("Config", new Config());
 
-            services.AddControllersWithViews();
+            services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<DataManager>();
+
+            services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Config.ConnectionString));
+
+            services.AddIdentity<IdentityUser, IdentityRole>(opts =>
+            {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(opts =>
+            {
+                opts.Cookie.Name = "myCompanyAuth";
+                opts.Cookie.HttpOnly = true;
+                opts.LoginPath = "account/login";
+                opts.AccessDeniedPath = "/account/accessdenied";
+                opts.SlidingExpiration = true;
+            });
+
+            services.AddControllersWithViews()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddSessionStateTempDataProvider();
+
             services.AddRazorPages();
         }
 
