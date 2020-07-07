@@ -29,12 +29,11 @@ namespace AspNetShop.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            Configuration.Bind("Config", new Config());
-
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddTransient<DataManager>();
 
-            services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Config.ConnectionString));
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts =>
             {
