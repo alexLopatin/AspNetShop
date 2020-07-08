@@ -24,6 +24,18 @@ namespace AspNetShop.DummyServer.Controllers
         public AccountController()
         {
         }
+        [Authorize]
+        [HttpGet]
+        public string GetName()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+        [Authorize]
+        [HttpGet]
+        public void LogOut()
+        {
+            Console.WriteLine("DIY");
+        }
         [AllowAnonymous]
         [HttpPost]
         public string Login(AspNetShop.Shared.ModelView.Login viewModel)
@@ -43,6 +55,29 @@ namespace AspNetShop.DummyServer.Controllers
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RANDOM_KEY_MUST_NOT_BE_SHARED")),
                     SecurityAlgorithms.HmacSha256));
  
+            string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwtToken;
+
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public string Register(AspNetShop.Shared.ModelView.Login viewModel)
+        {
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, viewModel.UserName)
+            };
+
+            // 3. Генерируем JWT.
+            var token = new JwtSecurityToken(
+                issuer: "https://localhost",
+                audience: "https://localhost",
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RANDOM_KEY_MUST_NOT_BE_SHARED")),
+                    SecurityAlgorithms.HmacSha256));
+
             string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
 

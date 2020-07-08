@@ -1,29 +1,26 @@
-﻿@page "/acc/login/{returnUrl}"
-@page "/acc/login"
+﻿@page "/acc/register"
 @inject HttpClient Http
 @inject ILocalStorageService LocalStore
-@inject NavigationManager navMan
 @using System.Text;
 @using System.Security.Cryptography;
-<h3>Login</h3>
+<h3>Регистрация</h3>
 
 <EditForm Model="model" OnSubmit=@HandleSubmit class="login-form">
-    <p>Нет аккаунта? <a href="/acc/register"> Зарегистрироваться</a></p>
-    <label for="Name">Логин:</label>
-    <InputText id="Name" @bind-Value="model.UserName"></InputText>
+    <label for="Login">Логин:</label>
+    <InputText id="Login" @bind-Value="model.UserName"></InputText>
+    <label for="FirstName">Имя:</label>
+    <InputText id="FirstName" @bind-Value="model.UserName"></InputText>
+    <label for="SecondName">Фамилия:</label>
+    <InputText id="SecondName" @bind-Value="model.UserName"></InputText>
+    <label for="Email">Почта:</label>
+    <InputText id="Email" @bind-Value="model.UserName"></InputText>
     <label for="Password">Пароль:</label>
 
     <InputText id="Password" @bind-Value="unHashed" type="password"></InputText>
-    <div class="remember">
-        <InputCheckbox id="Remember" @bind-Value="model.RememberMe"></InputCheckbox>
-        <label for="Remember">Запомнить меня </label>
-    </div>
-    <button type="submit">Submit</button>
+    <button type="submit">Зарегистрироваться</button>
 </EditForm>
 
 @code {
-    [Parameter]
-    public string returnUrl { get; set; } = "/";
     private string unHashed { get; set; } = "";
     private AspNetShop.Shared.ModelView.Login model = new AspNetShop.Shared.ModelView.Login();
     private async Task HandleSubmit()
@@ -34,10 +31,6 @@
         var response = await Http.PostAsJsonAsync("/account/login", model);
         string token = await response.Content.ReadAsStringAsync();
         await LocalStore.SetItemAsync("JWT", token);
-        if(returnUrl != null)
-            navMan.NavigateTo( Uri.UnescapeDataString( returnUrl));
-        else
-            navMan.NavigateTo("/");
     }
 
 }

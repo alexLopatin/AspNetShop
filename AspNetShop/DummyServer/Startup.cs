@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AspNetShop.Shared;
 
 namespace AspNetShop.Server
 {
@@ -72,7 +73,6 @@ namespace AspNetShop.Server
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
                 };
             });
-
 
             services.AddScoped<DataLoader>();
             services.AddControllersWithViews();

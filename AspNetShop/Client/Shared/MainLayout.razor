@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject ILocalStorageService LocalStore
+@inject IAuthProvider AuthProvider
+@inject HttpClient Http
+@inject NavigationManager navMan
 
 <div class="sidebar">
     <NavMenu />
@@ -9,7 +12,15 @@
 
     <div class="top-row px-4">
         <SearchBox></SearchBox>
-        <NavLink href="/crt" class="ml-md-auto cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> @CartString </NavLink>
+        <div class="acc-link">
+            @if (LoggedIn)
+            {
+                <a href="/" class="log-out" @onclick="(() => AuthProvider.LogOut(Http))">выйти</a>
+            }
+
+            <a href="@Link">@Name</a>
+        </div>
+        <NavLink href="/crt" class="cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> @CartString </NavLink>
 
 
     </div>
@@ -44,6 +55,9 @@
     private Dictionary<string, int> cart;
     private int CountCart = 0;
     private long cartPrice = 0;
+    public string Name { get; set; }
+    public string Link { get; set; }
+    public bool LoggedIn { get; set; }
     public string CartString
     {
         get
@@ -66,16 +80,35 @@
             res += item.Value;
         return res;
     }
+    async Task GetName()
+    {
+        try
+        {
+            LoggedIn = true;
+            Name = await AuthProvider.AuthAction(Http, (() => Http.GetStringAsync("account/GetName")));
+            Link = "/ord";
+        }
+        catch (Exception ex)
+        {
+            LoggedIn = false;
+            Name = "Войти | Зарегистрироваться";
+            Link = "/acc/login/" + Uri.EscapeDataString( navMan.Uri);
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
+
         cart = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         CountCart = GetCount();
         cartPrice = await LocalStore.GetItemAsync<long>("cartPrice");
-        LocalStore.Changed += async (x,e) =>
+        await GetName();
+        navMan.LocationChanged += (async (x, e) => await GetName());
+        LocalStore.Changed += async (x, e) =>
         {
             cart = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
             CountCart = GetCount();
             cartPrice = await LocalStore.GetItemAsync<long>("cartPrice");
+            await GetName();
             this.StateHasChanged();
         };
     }

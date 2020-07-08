@@ -90,45 +90,42 @@
     <p>@s</p>
 
 </div>
+
+@inject IAuthProvider authProvider
 @code {
-    int state = 0;
-    Product[] products;
-    Dictionary<string, int> dict;
-    long price = 0;
-    string s = "";
-    private async Task ChangeCount(ChangeEventArgs e, int id)
-    {
-        int oldVal = dict[id.ToString()];
-        int newVal = Convert.ToInt32(e.Value);
-        newVal = Math.Clamp(newVal, 1, 999);
-        price += (newVal - oldVal) * (long)products.First(x => x.Id == id).NewPrice;
-        dict[id.ToString()] = newVal;
-        await LocalStore.SetItemAsync("cart", dict);
-        await LocalStore.SetItemAsync("cartPrice", price);
-    }
-    private async Task RemoveItem(int id)
-    {
-        price -= dict[id.ToString()] * (long)products.First(x => x.Id == id).NewPrice;
-        dict.Remove(id.ToString());
-        products = products.Where(x => x.Id != id).ToArray();
-        await LocalStore.SetItemAsync("cart", dict);
-        await LocalStore.SetItemAsync("cartPrice", price);
-        //await Task.Delay(2000);
-        //this.StateHasChanged();
-    }
+        int state = 0;
+        Product[] products;
+        Dictionary<string, int> dict;
+        long price = 0;
+        string s = "";
+        private async Task ChangeCount(ChangeEventArgs e, int id)
+        {
+            int oldVal = dict[id.ToString()];
+            int newVal = Convert.ToInt32(e.Value);
+            newVal = Math.Clamp(newVal, 1, 999);
+            price += (newVal - oldVal) * (long)products.First(x => x.Id == id).NewPrice;
+            dict[id.ToString()] = newVal;
+            await LocalStore.SetItemAsync("cart", dict);
+            await LocalStore.SetItemAsync("cartPrice", price);
+        }
+        private async Task RemoveItem(int id)
+        {
+            price -= dict[id.ToString()] * (long)products.First(x => x.Id == id).NewPrice;
+            dict.Remove(id.ToString());
+            products = products.Where(x => x.Id != id).ToArray();
+            await LocalStore.SetItemAsync("cart", dict);
+            await LocalStore.SetItemAsync("cartPrice", price);
+            //await Task.Delay(2000);
+            //this.StateHasChanged();
+        }
     protected override async Task OnInitializedAsync()
     {
 
         dict = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         price = await LocalStore.GetItemAsync<int>("cartPrice");
-        var token = await LocalStore.GetItemAsync<string>("JWT");
-
-        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-
         try
         {
-            s = await Http.GetStringAsync("/cart/test");
+            s = await authProvider.AuthAction(Http, (() => Http.GetStringAsync("/cart/test")));
         }
         catch(Exception ex)
         {

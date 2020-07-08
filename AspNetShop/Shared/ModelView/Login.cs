@@ -8,5 +8,6 @@ namespace AspNetShop.Shared.ModelView
     {
         public string UserName { get; set; } = "";
         public bool RememberMe { get; set; } = false;
+        public string PasswordHash { get; set; }
     }
 }

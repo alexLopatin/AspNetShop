@@ -400,3 +400,24 @@ a.control_next {
     margin-right:auto;
     text-align:center;
 }
+
+.login-form {
+    text-align:center;
+    margin-top:100px;
+}
+    .login-form > * {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+.login-form > .remember > * {
+        display: inline-block;
+    }
+.acc-link {
+    margin-left:auto!important;
+    font-size:18px;
+}
+.acc-link > .log-out {
+    margin-right: 15px;
+    font-size: 14px;
+}
