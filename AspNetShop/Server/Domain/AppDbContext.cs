@@ -11,7 +11,13 @@ namespace AspNetShop.Server.Domain
 {
     public class AppDbContext : IdentityDbContext<IdentityUser>
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
         public DbSet<Product> Products { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS; Database=AspNetShopDb; Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
