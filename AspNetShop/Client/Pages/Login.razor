@@ -1,0 +1,21 @@
+﻿@page "/acc/login"
+@inject HttpClient Http
+@inject ILocalStorageService LocalStore
+<h3>Login</h3>
+
+<EditForm Model="model" OnSubmit=@HandleSubmit>
+    <InputText id="Name" @bind-Value="model.UserName"></InputText>
+    <InputCheckbox id="Remember" @bind-Value="model.RememberMe"></InputCheckbox>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private AspNetShop.Shared.ModelView.Login model = new AspNetShop.Shared.ModelView.Login();
+    private async Task HandleSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("/account/login", model);
+        string token = await response.Content.ReadAsStringAsync();
+        await LocalStore.SetItemAsync("JWT", token);
+    }
+
+}

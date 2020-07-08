@@ -2,51 +2,100 @@
 @inject ILocalStorageService LocalStore
 @inject HttpClient Http
 
-
 <h3>Корзина</h3>
 <div class="cart-list">
-    @if (products != null)
+    @switch (state)
     {
-        @if (products.Count() == 0)
-        {
-            <p style="font-size:18px;">Корзина пуста.</p>
-        }
-        else
-        {
-            <p><b>1.</b> Сборка заказа:</p>
-            @foreach (Product p in products)
+        case 0:
+            @if (products != null)
             {
-                <div class="product-short">
-                    <a style="float:right; cursor: pointer;" @onclick="(() => RemoveItem(p.Id))">🗙</a>
-                    <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
-                    <input type="number" min="1" max="999" value="@dict[p.Id.ToString()]" @onchange="((e) => ChangeCount(e,p.Id))" style="width:54px">
-                    @if (p.OldPrice > p.NewPrice)
+                @if (products.Count() == 0)
+                {
+                    <p style="font-size:18px;">Корзина пуста.</p>
+                }
+                else
+                {
+                    <p><b>1.</b> Сборка заказа:</p>
+                    @foreach (Product p in products)
                     {
-                        <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽  <strike>@(p.OldPrice*dict[p.Id.ToString()]) ₽</strike> </p>
+                        <div class="product-short">
+                            <a style="float:right; cursor: pointer;" @onclick="(() => RemoveItem(p.Id))">🗙</a>
+                            <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
+                            <input type="number" min="1" max="999" value="@dict[p.Id.ToString()]" @onchange="((e) => ChangeCount(e,p.Id))" style="width:54px">
+                            @if (p.OldPrice > p.NewPrice)
+                            {
+                                <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽  <strike>@(p.OldPrice*dict[p.Id.ToString()]) ₽</strike> </p>
+                            }
+                            else
+                            {
+                                <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽</p>
+                            }
+
+
+                            <img src="/thumbs/@(p.Id).jpg" />
+                        </div>
+
                     }
-                    else
-                    {
-                        <p>@(p.NewPrice*dict[p.Id.ToString()]) ₽</p>
-                    }
-
-
-                    <img src="/thumbs/@(p.Id).jpg" />
-                </div>
-
+                    <p>Заказ на сумму <b>@price  ₽</b>.</p>
+                    <div style="text-align:center;">
+                        <button class="to-cart" @onclick="(() => state++)">Выбрать способ доставки</button>
+                    </div>
+                }
             }
-            <p>Заказ на сумму <b>@price  ₽</b>.</p>
-        }
+            else
+            {
+                <p style="font-size:18px;">Корзина пуста.</p>
+            }
+            break;
+        case 1:
+            <p><b>2.</b> Способ доставки заказа:</p>
+            <div style="text-align:center;">
+                <form>
+                    <fieldset>
+                        <input type="radio" value="Самовывоз" id="radio-first" />
+                        <label for="radio-first">Самовывоз</label><br>
+                        <input list="points"><br>
+                        <datalist id="points">
+                            <option value="Москва, ул. Красноармейская д.12" />
+                            <option value="Санкт-Петербург, ул. Пушкина" />
+                        </datalist>
+                        <input type="radio" value="Доставка курьером" id="radio-second" />
+                        <label for="radio-second">Доставка курьером</label><br>
+                        <input list="courier"><br>
+                        <datalist id="courier">
+                            <option value="СДЭК" />
+                            <option value="DHL" />
+                        </datalist>
+                        <input type="radio" value="Доставка по почте" id="radio-third" />
+                        <label for="radio-third">Доставка по почте</label><br>
+                        <input list="mail"><br>
+                        <datalist id="mail">
+                            <option value="Почта России" />
+                        </datalist>
+                    </fieldset>
+                </form>
 
+                <button class="to-cart" @onclick="(() => state--)">Вернуться к заказу</button>
+                <button class="to-cart" @onclick="(() => state++)">Выбрать способ оплаты</button>
+            </div>
+            break;
+        case 2:
+            <p><b>3.</b> Способ оплаты заказа:</p>
+            <div style="text-align:center;">
+                <button class="to-cart" @onclick="(() => state--)">Вернуться к выбору способа доставки</button>
+                <button class="to-cart" @onclick="(() => state++)">Оформить заказ</button>
+            </div>
+            break;
     }
-    else
-    {
-        <p style="font-size:18px;">Корзина пуста.</p>
-    }
+    <p>@s</p>
+
 </div>
 @code {
+    int state = 0;
     Product[] products;
     Dictionary<string, int> dict;
     long price = 0;
+    string s = "";
     private async Task ChangeCount(ChangeEventArgs e, int id)
     {
         int oldVal = dict[id.ToString()];
@@ -69,9 +118,24 @@
     }
     protected override async Task OnInitializedAsync()
     {
+
         dict = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         price = await LocalStore.GetItemAsync<int>("cartPrice");
-        if(dict!=null)
+        var token = await LocalStore.GetItemAsync<string>("JWT");
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+        try
+        {
+            s = await Http.GetStringAsync("/cart/test");
+        }
+        catch(Exception ex)
+        {
+            s = ex.ToString();
+        }
+
+        if (dict != null)
         {
             var response = await Http.PostAsJsonAsync("/cart/get", dict);
             products = await response.Content.ReadFromJsonAsync<Product[]>();

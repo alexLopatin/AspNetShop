@@ -390,7 +390,13 @@ a.control_next {
     margin-top:100px;
 }
 
-.cart-list > p {
+.cart-list > p, button {
     margin-top:25px;
+    text-align:center;
+}
+
+.cart-list >  button {
+    margin-left:auto;
+    margin-right:auto;
     text-align:center;
 }
