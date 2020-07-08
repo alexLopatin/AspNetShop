@@ -421,3 +421,56 @@ a.control_next {
     margin-right: 15px;
     font-size: 14px;
 }
+
+.full-order {
+    font-size: 18px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: indigo;
+    padding: 5px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 800px;
+}
+.full-order > summary > .states {
+    color: indigo;
+}
+
+.order-state {
+    display:inline-block;
+}
+
+.status-tip {
+    background-color: lightgrey;
+    border: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: indigo;
+    padding: 4px;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.order-state:hover .status-tip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.order-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    max-width: 80%;
+    display:inline-block;
+    margin-bottom:0;
+
+}
+
+.orders-list {
+    margin:20px;
+}
+summary:focus {
+    outline: 0;
+}

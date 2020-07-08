@@ -1,0 +1,89 @@
+﻿@page "/ord"
+@inject HttpClient Http
+@inject IAuthProvider AuthProvider
+
+<h3>Заказы</h3>
+
+@if (fullOrders != null)
+{
+    <div class="orders-list">
+    @for(int i = 0; i < fullOrders.Count; i++)
+    {
+        
+        <details class="full-order">
+            <summary>
+                <h4 class="order-name">@fullOrders[i].Name</h4>
+                <div class="states">
+                    @for (int j = 0; j < fullOrders[i].Order.States.Count(); j++)
+                    {
+                        <div class="order-state">
+                            <span class="oi oi-circle-check"></span>
+                            <div class="status-tip">@fullOrders[i].Order.States.ElementAt(j)</div>
+                        </div>
+                    }
+                    @for (int j = fullOrders[i].Order.States.Count(); j < fullOrders[i].Order.AllCountOfStates; j++)
+                    {
+                        <div class="order-state">
+                            <span class="oi oi-media-record"></span>
+                        </div>
+                    }
+                </div>
+                <p style="display:inline-block; margin-right:auto;">Последнее изменение статуса: @fullOrders[i].Order.LastStateChangeTime.ToShortDateString()</p>
+                <p style="display: inline-block;float:right; font-size:20px;"><b>@fullOrders[i].Price ₽</b></p>
+            </summary>
+            <p>Тип доставки: @fullOrders[i].Order.DeliveryType </p>
+            <p>Адрес доставки: @fullOrders[i].Order.Address </p>
+            <p>Доставка: @fullOrders[i].Order.DeliveryPrice ₽</p>
+            <h4>Товары:</h4>
+            @foreach (var p in fullOrders[i].Products)
+            {
+                <div style="padding:20px;">
+                    <p><a href="/prod/@p.Id">@p.Name</a>, @fullOrders[i].Order.Products.First(x => x.ProductId == p.Id).Count шт.</p>
+                    <p>@fullOrders[i].Order.Products.First(x => x.ProductId == p.Id).Price ₽</p>
+                </div>
+            }
+        <p>Цена без доставки: @fullOrders[i].Order.Products.Sum(x => x.Price) ₽</p>
+        </details>
+    }
+        </div>
+}
+else
+{
+    <p>Заказов нет.</p>
+}
+
+
+@code {
+    class FullOrder
+    {
+        public string Name;
+        public Order Order;
+        public double Price;
+        public List<Product> Products;
+    }
+    List<FullOrder> fullOrders = new List<FullOrder>();
+    Order[] orders;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            orders = await AuthProvider.AuthAction(Http, (() => Http.GetFromJsonAsync<Order[]>("order/get")));
+            for(int i = 0; i < orders.Length; i++)
+            {
+                var o = orders[i];
+                FullOrder fo = new FullOrder();
+                fo.Order = o;
+                fo.Price = o.DeliveryPrice + o.Products.Sum(x => x.Price);
+                Dictionary<string, int> dict = o.Products.Select(x => x.ProductId).ToDictionary(k => k.ToString(), k => 1);
+                var response = await Http.PostAsJsonAsync("/cart/get", dict);
+                fo.Products = await response.Content.ReadFromJsonAsync<List<Product>>();
+                fo.Name = "Заказ №" + o.Id + ": " + string.Join(" ", fo.Products.Select(x => x.Name));
+                fullOrders.Add(fo);
+            }
+        }
+        catch(Exception ex)
+        {
+
+        }
+    }
+}

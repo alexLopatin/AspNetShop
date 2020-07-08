@@ -87,7 +87,6 @@
             </div>
             break;
     }
-    <p>@s</p>
 
 </div>
 
@@ -97,7 +96,6 @@
         Product[] products;
         Dictionary<string, int> dict;
         long price = 0;
-        string s = "";
         private async Task ChangeCount(ChangeEventArgs e, int id)
         {
             int oldVal = dict[id.ToString()];
@@ -123,15 +121,6 @@
 
         dict = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         price = await LocalStore.GetItemAsync<int>("cartPrice");
-        try
-        {
-            s = await authProvider.AuthAction(Http, (() => Http.GetStringAsync("/cart/test")));
-        }
-        catch(Exception ex)
-        {
-            s = ex.ToString();
-        }
-
         if (dict != null)
         {
             var response = await Http.PostAsJsonAsync("/cart/get", dict);
