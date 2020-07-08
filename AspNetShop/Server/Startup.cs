@@ -9,7 +9,6 @@ using System.Linq;
 using AspNetShop.Server.Domain;
 using AspNetShop.Server.Domain.Repositories.Abstract;
 using AspNetShop.Server.Domain.Repositories.EntityFramework;
-using AspNetShop.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +29,8 @@ namespace AspNetShop.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<ICategoryRepository, EFCategoryRepository>();
+            services.AddTransient<IStockRepository, EFStockRepository>();
             services.AddTransient<DataManager>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");

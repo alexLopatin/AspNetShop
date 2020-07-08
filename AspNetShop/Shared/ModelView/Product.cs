@@ -14,5 +14,6 @@ namespace AspNetShop.Shared.ModelView
         public double OldPrice { get; set; }
         public double NewPrice { get; set; }
         public double Rating { get; set; }
+        public string Description { get; set; }
     }
 }

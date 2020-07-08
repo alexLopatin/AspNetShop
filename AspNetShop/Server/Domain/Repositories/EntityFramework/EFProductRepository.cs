@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AspNetShop.Server.Domain.Entitys;
 using AspNetShop.Server.Domain.Repositories.Abstract;
+using AspNetShop.Shared.ModelView;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetShop.Server.Domain.Repositories.EntityFramework
@@ -21,7 +21,7 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
             return context.Products;
         }
 
-        public Product GetProduct(Guid id)
+        public Product GetProduct(int id)
         {
             return context.Products.FirstOrDefault(product => product.Id == id);
         }
@@ -40,7 +40,7 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
             context.SaveChanges();
         }
 
-        public void DeleteProduct(Guid id)
+        public void DeleteProduct(int id)
         {
             context.Products.Remove(new Product()
             {
