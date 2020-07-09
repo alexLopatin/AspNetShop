@@ -22,7 +22,7 @@
 
 @code {
     private string unHashed { get; set; } = "";
-    private AspNetShop.Shared.ModelView.Login model = new AspNetShop.Shared.ModelView.Login();
+    private AspNetShop.Shared.Form.Login model = new AspNetShop.Shared.Form.Login();
     private async Task HandleSubmit()
     {
         var sha1 = new SHA1CryptoServiceProvider();

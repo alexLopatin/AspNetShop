@@ -43,5 +43,12 @@ namespace AspNetShop.DummyServer.Controllers
             orders.Add(order);
             return orders.ToArray();
         }
+        [HttpPost]
+        [Authorize]
+        public List<string> CreateOrder(Shared.Form.Order orderForm)
+        {
+            //OK - номер заказа, в ином случае ERROR - текст ошибки.
+            return new List<string>() { "OK", "4"};
+        }
     }
 }

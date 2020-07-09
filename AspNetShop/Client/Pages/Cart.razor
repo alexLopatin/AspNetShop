@@ -1,7 +1,8 @@
 ﻿@page "/crt"
 @inject ILocalStorageService LocalStore
 @inject HttpClient Http
-
+@inject IAuthProvider AuthProvider
+@inject NavigationManager navMan
 <h3>Корзина</h3>
 <div class="cart-list">
     @switch (state)
@@ -38,7 +39,14 @@
                     }
                     <p>Заказ на сумму <b>@price  ₽</b>.</p>
                     <div style="text-align:center;">
-                        <button class="to-cart" @onclick="(() => state++)">Выбрать способ доставки</button>
+                        @if (LoggedIn)
+                        {
+                            <button class="to-cart" @onclick="(() => state++)"> Выбрать способ доставки</button>
+                        }
+                        else
+                        {
+                            <button class="to-cart" @onclick=@(() => navMan.NavigateTo("acc/login/" + Uri.EscapeDataString(navMan.Uri)))>Войти на сайт</button>
+                        }
                     </div>
                 }
             }
@@ -50,41 +58,60 @@
         case 1:
             <p><b>2.</b> Способ доставки заказа:</p>
             <div style="text-align:center;">
-                <form>
-                    <fieldset>
-                        <input type="radio" value="Самовывоз" id="radio-first" />
-                        <label for="radio-first">Самовывоз</label><br>
-                        <input list="points"><br>
-                        <datalist id="points">
-                            <option value="Москва, ул. Красноармейская д.12" />
-                            <option value="Санкт-Петербург, ул. Пушкина" />
-                        </datalist>
-                        <input type="radio" value="Доставка курьером" id="radio-second" />
-                        <label for="radio-second">Доставка курьером</label><br>
-                        <input list="courier"><br>
-                        <datalist id="courier">
-                            <option value="СДЭК" />
-                            <option value="DHL" />
-                        </datalist>
-                        <input type="radio" value="Доставка по почте" id="radio-third" />
-                        <label for="radio-third">Доставка по почте</label><br>
-                        <input list="mail"><br>
-                        <datalist id="mail">
-                            <option value="Почта России" />
-                        </datalist>
-                    </fieldset>
+                <form class="delivery-form">
+                    <input type="radio" name="delivery" value="Самовывоз" id="radio-first" @oninput="(() => deliveryType = 0)" checked="@(deliveryType == 0)" />
+                    <label for="radio-first">Самовывоз <b>+ 0 ₽</b></label><br>
+                    <div style="display: @(((deliveryType == 0) ? "normal" : "none"))">
+                        <p>Выбор пункта доставки:</p>
+                        <input type="radio" name="pickup" value="pickup_1" id="pickup-first" @oninput="(() => deliveryProvider = 0)" checked="@(deliveryProvider == 0)"/>
+                        <label for="pickup-first">Москва, ул. Красноармейская д.12</label><br>
+                        <input type="radio" name="pickup" value="pickup_2" id="pickup-second" @oninput="(() => deliveryProvider = 1)" checked="@(deliveryProvider == 1)"/>
+                        <label for="pickup-second">Санкт-Петербург, ул. Пушкина</label><br>
+                    </div>
+                    <input type="radio" name="delivery" value="Доставка курьером" id="radio-second" @oninput="(() => deliveryType = 1)" checked="@(deliveryType == 1)" />
+                    <label for="radio-second">Доставка курьером <b>+ 500 ₽</b></label><br>
+                    <div style="display: @(((deliveryType == 1) ? "normal" : "none"))">
+                        <p>Выбор компании экспресс-доставки:</p>
+                        <input type="radio" name="pickup" value="courier_1" id="courier-first" @oninput="(() => deliveryProvider = 10)" checked="@(deliveryProvider == 10)"/>
+                        <label for="courier-first">СДЭК</label><br>
+                        <input type="radio" name="pickup" value="courier_2" id="courier-second" @oninput="(() => deliveryProvider = 11)" checked="@(deliveryProvider == 11)"/>
+                        <label for="courier-second">DHL</label><br>
+
+                        Адрес доставки: <input type="text" @bind-value="Address" />
+                    </div>
+                    <input type="radio" name="delivery" value="Доставка по почте" id="radio-third" @oninput="(() => deliveryType = 2)" checked="@(deliveryType == 2)" />
+                    <label for="radio-third">Доставка по почте <b>+ 200 ₽</b></label><br>
+                    <div style="display:@(((deliveryType == 2) ? "normal" : "none"))">
+                        <p>Выбор оператора почтовой сети:</p>
+                        <input type="radio" name="pickup" value="mail_1" id="mail-first" @oninput="(() => deliveryProvider = 20)" checked="@(deliveryProvider == 20)" />
+                        <label for="mail-first">Почта России</label><br>
+                        Адрес доставки: <input type="text" @bind-value="Address" />
+                    </div>
                 </form>
 
                 <button class="to-cart" @onclick="(() => state--)">Вернуться к заказу</button>
-                <button class="to-cart" @onclick="(() => state++)">Выбрать способ оплаты</button>
+                <button class="to-cart" @onclick="(() => state++)" disabled="@(!ValidateDelivery())">Выбрать способ оплаты</button>
             </div>
             break;
         case 2:
             <p><b>3.</b> Способ оплаты заказа:</p>
             <div style="text-align:center;">
-                <button class="to-cart" @onclick="(() => state--)">Вернуться к выбору способа доставки</button>
-                <button class="to-cart" @onclick="(() => state++)">Оформить заказ</button>
+                <form class="delivery-form">
+                    <input type="radio" name="payment" value="Самовывоз" id="payment-first" @oninput="(() => paymentType = 0)" disabled="@(deliveryType != 0)" checked="@(paymentType == 0)" />
+                    <label for="payment-first">Оплата наличными при получении</label><br>
+                    <input type="radio" name="payment" value="Самовывоз" id="payment-second" @oninput="(() => paymentType = 1)" checked="@(paymentType == 1)" />
+                    <label for="payment-second">Банковский платеж</label><br>
+                    <input type="radio" name="payment" value="Самовывоз" id="payment-third" @oninput="(() => paymentType = 2)" checked="@(paymentType == 2)" />
+                    <label for="payment-third">Электронные деньги</label><br>
+                </form>
+                <div style="text-align:center;">
+                    <button class="to-cart" @onclick="(() => state--)">Вернуться к выбору способа доставки</button>
+                    <button class="to-cart" @onclick="(() => Submit())">Оформить заказ</button>
+                </div>
             </div>
+            break;
+        case 3:
+            <h4>@Message</h4>
             break;
     }
 
@@ -92,33 +119,97 @@
 
 @inject IAuthProvider authProvider
 @code {
-        int state = 0;
-        Product[] products;
-        Dictionary<string, int> dict;
-        long price = 0;
-        private async Task ChangeCount(ChangeEventArgs e, int id)
+    int deliveryType = -1;
+    int deliveryProvider = -1;
+    int paymentType = -1;
+    public string Address { get; set; } = "";
+    int state = 0;
+    Product[] products;
+    Dictionary<string, int> dict;
+    long price = 0;
+    bool LoggedIn = false;
+    public string Message { get; set; }
+    bool ValidateDelivery()
+    {
+        if (deliveryType < 0 || deliveryProvider < 0)
+            return false;
+        if (deliveryProvider / 10 != deliveryType)
+            return false;
+        if (deliveryType > 0 && Address == "")
+            return false;
+        return true;
+    }
+    private async Task Submit()
+    {
+        AspNetShop.Shared.Form.Order order = new AspNetShop.Shared.Form.Order();
+        order.Address = Address;
+        order.DeliveryType = deliveryType;
+        order.DeliveryTypeOption = deliveryProvider % 10;
+        order.PaymentType = paymentType;
+        List<ProductOrder> productsOrders = new List<ProductOrder>();
+        foreach(var d in dict)
         {
-            int oldVal = dict[id.ToString()];
-            int newVal = Convert.ToInt32(e.Value);
-            newVal = Math.Clamp(newVal, 1, 999);
-            price += (newVal - oldVal) * (long)products.First(x => x.Id == id).NewPrice;
-            dict[id.ToString()] = newVal;
-            await LocalStore.SetItemAsync("cart", dict);
-            await LocalStore.SetItemAsync("cartPrice", price);
+            Product p = products.First(x => x.Id.ToString() == d.Key);
+            ProductOrder po = new ProductOrder();
+            po.Count = d.Value;
+            po.ProductId = Convert.ToInt32(d.Key);
+            po.Price = p.NewPrice * po.Count;
+            productsOrders.Add(po);
         }
-        private async Task RemoveItem(int id)
+        order.Products = productsOrders.ToArray();
+        state++;
+        try
         {
-            price -= dict[id.ToString()] * (long)products.First(x => x.Id == id).NewPrice;
-            dict.Remove(id.ToString());
-            products = products.Where(x => x.Id != id).ToArray();
-            await LocalStore.SetItemAsync("cart", dict);
-            await LocalStore.SetItemAsync("cartPrice", price);
-            //await Task.Delay(2000);
-            //this.StateHasChanged();
+            var response = await Http.PostAsJsonAsync("/order/CreateOrder", order);
+            List<string> ans = await response.Content.ReadFromJsonAsync<List<string>>();
+            if (ans[0] == "OK")
+            {
+                await LocalStore.SetItemAsync< Dictionary<string, int>>("cart", new Dictionary<string, int>());
+                await LocalStore.SetItemAsync<int>("cartPrice", 0);
+                Message = String.Format("Заказ №{0} успешно оформлен.", ans[1]);
+            }
+            else
+                Message = String.Format("Ошибка: {0}", ans[1]);
         }
+        catch (Exception ex)
+        {
+            Message = "Что-то пошло не так. Попробуйте сделать заказ позже.";
+        }
+
+
+
+    }
+    private async Task ChangeCount(ChangeEventArgs e, int id)
+    {
+        int oldVal = dict[id.ToString()];
+        int newVal = Convert.ToInt32(e.Value);
+        newVal = Math.Clamp(newVal, 1, 999);
+        price += (newVal - oldVal) * (long)products.First(x => x.Id == id).NewPrice;
+        dict[id.ToString()] = newVal;
+        await LocalStore.SetItemAsync("cart", dict);
+        await LocalStore.SetItemAsync("cartPrice", price);
+    }
+    private async Task RemoveItem(int id)
+    {
+        price -= dict[id.ToString()] * (long)products.First(x => x.Id == id).NewPrice;
+        dict.Remove(id.ToString());
+        products = products.Where(x => x.Id != id).ToArray();
+        await LocalStore.SetItemAsync("cart", dict);
+        await LocalStore.SetItemAsync("cartPrice", price);
+        //await Task.Delay(2000);
+        //this.StateHasChanged();
+    }
     protected override async Task OnInitializedAsync()
     {
-
+        try
+        {
+            LoggedIn = true;
+            await AuthProvider.AuthAction(Http, (() => Http.GetStringAsync("account/GetName")));
+        }
+        catch (Exception ex)
+        {
+            LoggedIn = false;
+        }
         dict = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         price = await LocalStore.GetItemAsync<int>("cartPrice");
         if (dict != null)

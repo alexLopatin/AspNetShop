@@ -18,12 +18,6 @@ namespace AspNetShop.DummyServer.Controllers
         {
             _loader = loader;
         }
-        [Authorize]
-        [HttpGet]
-        public string Test()
-        {
-            return "Authorized as " + HttpContext.User.Claims.First().Value;
-        }
 
         [HttpPost]
         public IEnumerable<Product> Get(Dictionary<string,int> products)

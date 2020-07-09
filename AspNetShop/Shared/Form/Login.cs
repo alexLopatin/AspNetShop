@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AspNetShop.Shared.ModelView
+namespace AspNetShop.Shared.Form
 {
     public class Login
     {

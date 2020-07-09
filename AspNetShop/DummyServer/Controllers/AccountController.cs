@@ -38,7 +38,7 @@ namespace AspNetShop.DummyServer.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public string Login(AspNetShop.Shared.ModelView.Login viewModel)
+        public string Login(AspNetShop.Shared.Form.Login viewModel)
         {
             var claims = new Claim[]
             {
@@ -61,7 +61,7 @@ namespace AspNetShop.DummyServer.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public string Register(AspNetShop.Shared.ModelView.Login viewModel)
+        public string Register(AspNetShop.Shared.Form.Login viewModel)
         {
             var claims = new Claim[]
             {
