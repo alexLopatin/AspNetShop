@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetShop.Server.Domain
+
 {
     public class AppDbContext : IdentityDbContext<IdentityUser>
     {
