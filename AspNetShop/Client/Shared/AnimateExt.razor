@@ -1,0 +1,25 @@
+﻿
+@if (b && ChildContent != null)
+{
+    <Animate Animation="Animation" DurationMs="DurationMs" Mirror="true"  >
+
+        @ChildContent
+    </Animate>
+}
+
+
+@code {
+    private bool b { get; set; } = true;
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public IAnimation Animation { get; set; }
+    [Parameter]
+    public int DurationMs { get; set; }
+    public async Task Restart()
+    {
+        b = false;
+        await Task.Delay(10);
+        b = true;
+    }
+}

@@ -6,25 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Images\banner1.jpg" />
-    <Content Remove="wwwroot\Images\banner2.jpg" />
-    <Content Remove="wwwroot\Images\banner3.jpg" />
-    <Content Remove="wwwroot\Images\banner4.jpg" />
-    <Content Remove="wwwroot\Images\banner5.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Images\banner1.jpg" />
-    <None Include="wwwroot\Images\banner2.jpg" />
-    <None Include="wwwroot\Images\banner3.jpg" />
-    <None Include="wwwroot\Images\banner4.jpg" />
-    <None Include="wwwroot\Images\banner5.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BlazorAnimate" Version="2.0.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="2.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspNetShop.Shared.ModelView;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetShop.DummyServer.Controllers
 {
+    
     [ApiController]
     [Route("{controller}/{action=Get}")]
     public class CartController : Controller
@@ -16,6 +18,7 @@ namespace AspNetShop.DummyServer.Controllers
         {
             _loader = loader;
         }
+
         [HttpPost]
         public IEnumerable<Product> Get(Dictionary<string,int> products)
         {

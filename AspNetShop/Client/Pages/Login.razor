@@ -1,0 +1,43 @@
+﻿@page "/acc/login/{returnUrl}"
+@page "/acc/login"
+@inject HttpClient Http
+@inject ILocalStorageService LocalStore
+@inject NavigationManager navMan
+@using System.Text;
+@using System.Security.Cryptography;
+<h3>Login</h3>
+
+<EditForm Model="model" OnSubmit=@HandleSubmit class="login-form">
+    <p>Нет аккаунта? <a href="/acc/register"> Зарегистрироваться</a></p>
+    <label for="Name">Логин:</label>
+    <InputText id="Name" @bind-Value="model.UserName"></InputText>
+    <label for="Password">Пароль:</label>
+
+    <InputText id="Password" @bind-Value="unHashed" type="password"></InputText>
+    <div class="remember">
+        <InputCheckbox id="Remember" @bind-Value="model.RememberMe"></InputCheckbox>
+        <label for="Remember">Запомнить меня </label>
+    </div>
+    <button type="submit">Войти</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public string returnUrl { get; set; } = "/";
+    private string unHashed { get; set; } = "";
+    private AspNetShop.Shared.Form.Login model = new AspNetShop.Shared.Form.Login();
+    private async Task HandleSubmit()
+    {
+        var sha1 = new SHA1CryptoServiceProvider();
+        var data = Encoding.UTF8.GetBytes(unHashed);
+        model.PasswordHash = Convert.ToBase64String(sha1.ComputeHash(data));
+        var response = await Http.PostAsJsonAsync("/account/login", model);
+        string token = await response.Content.ReadAsStringAsync();
+        await LocalStore.SetItemAsync("JWT", token);
+        if(returnUrl != null)
+            navMan.NavigateTo( Uri.UnescapeDataString( returnUrl));
+        else
+            navMan.NavigateTo("/");
+    }
+
+}

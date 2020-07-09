@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -29,7 +30,17 @@ namespace AspNetShop.DummyServer
                 {
                     
                     var type = TItem.GetType().GetProperty(child.Name).PropertyType;
-                    var value = TypeDescriptor.GetConverter(type).ConvertFrom(child.InnerXml);
+                    object value = default;
+                    try
+                    {
+                        value = TypeDescriptor.GetConverter(type).ConvertFrom(child.InnerXml);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (type == typeof(Double))
+                            value = Convert.ToDouble(child.InnerXml, CultureInfo.InvariantCulture);
+                    }
+                    
                     TItem.GetType().GetProperty(child.Name).SetValue(TItem, value);
                 }
                 res.Add(TItem);
