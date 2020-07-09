@@ -47,7 +47,7 @@
       <TimeAdded>05.06.2020</TimeAdded>
       <OldPrice>8990</OldPrice>
       <NewPrice>6990</NewPrice>
-      <Rating>4,5</Rating>
+      <Rating>4.5</Rating>
     </Product>
     <Product>
       <Id>2</Id>
@@ -56,7 +56,7 @@
       <TimeAdded>08.06.2020</TimeAdded>
       <OldPrice>14990</OldPrice>
       <NewPrice>14990</NewPrice>
-      <Rating>4,5</Rating>
+      <Rating>4.5</Rating>
     </Product>
     <Product>
       <Id>3</Id>
@@ -101,7 +101,7 @@
       <TimeAdded>01.06.2020</TimeAdded>
       <OldPrice>7840</OldPrice>
       <NewPrice>7840</NewPrice>
-      <Rating>4,5</Rating>
+      <Rating>4.5</Rating>
     </Product>
     <Product>
       <Id>8</Id>
@@ -119,7 +119,7 @@
       <TimeAdded>05.06.2020</TimeAdded>
       <OldPrice>5600</OldPrice>
       <NewPrice>5600</NewPrice>
-      <Rating>4,5</Rating>
+      <Rating>4.5</Rating>
     </Product>
     <Product>
       <Id>10</Id>
@@ -128,7 +128,7 @@
       <TimeAdded>30.06.2020</TimeAdded>
       <OldPrice>2667</OldPrice>
       <NewPrice>2070</NewPrice>
-      <Rating>4,5</Rating>
+      <Rating>4.5</Rating>
     </Product>
   </ProductList>
 </data>
