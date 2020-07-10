@@ -28,7 +28,6 @@ namespace AspNetShop.DummyServer
                 T TItem = new T();
                 foreach(XmlNode child in item.ChildNodes)
                 {
-                    
                     var type = TItem.GetType().GetProperty(child.Name).PropertyType;
                     object value = default;
                     try

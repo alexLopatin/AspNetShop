@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetShop.Server.Controllers
-{
+{`  
     [ApiController]
     [Route("{controller}/{action=Get}")]
     public class OrderController : Controller
@@ -48,7 +48,7 @@ namespace AspNetShop.Server.Controllers
         [Authorize]
         public List<string> CreateOrder(Shared.Form.Order orderForm)
         {
-            //OK - номер заказа, в ином случае ERROR - текст ошибки.
+            //OK - номер заказа, в ином случае ERROR - текст ошибки.    
             return new List<string>() { "OK", "4"};
         }
     }
