@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AspNetShop.Shared;
+using AspNetShop.DummyServer.Data;
 
 namespace AspNetShop.Server
 {
@@ -59,6 +60,8 @@ namespace AspNetShop.Server
                 opts.Password.RequireDigit = false;
             }).AddEntityFrameworkStores<IdentityDbContext<IdentityUser>>().AddDefaultTokenProviders();
             */
+            string connection = "Data Source=ALEX;Initial Catalog=ShopDB;Integrated Security=True";
+            services.AddDbContext<AppContext>(options => options.UseSqlServer(connection));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -76,7 +79,14 @@ namespace AspNetShop.Server
 
             services.AddScoped<DataLoader>();
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                });
+
+            services.AddDbContext<AppContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("AppContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

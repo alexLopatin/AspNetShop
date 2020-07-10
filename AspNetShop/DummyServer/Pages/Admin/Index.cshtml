@@ -1,0 +1,73 @@
+﻿@page
+@model AspNetShop.DummyServer.Pages.Admin.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a href ="/admin/create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Thumbnail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].TimeAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].OldPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].NewPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Product) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thumbnail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OldPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a href ="/admin/edit?id=@item.Id">Edit</a> |
+                <a href ="/admin/details?id=@item.Id">Details</a> |
+                <a href ="/admin/delete?id=@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
