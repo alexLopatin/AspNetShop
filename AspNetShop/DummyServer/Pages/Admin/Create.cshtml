@@ -1,0 +1,65 @@
+﻿@page
+@model AspNetShop.DummyServer.Pages.Admin.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="prodModel.CategoryId"  class="control-label"></label>
+                <input asp-for="prodModel.CategoryId" name="CategoryId" class="form-control" />
+                <span asp-validation-for="prodModel.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.Name" class="control-label"></label>
+                <input asp-for="prodModel.Name" name="Name" class="form-control" />
+                <span asp-validation-for="prodModel.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.Thumbnail"  class="control-label"></label>
+                <input asp-for="prodModel.Thumbnail" class="form-control" />
+                <span asp-validation-for="prodModel.Thumbnail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.TimeAdded"  class="control-label"></label>
+                <input asp-for="prodModel.TimeAdded" class="form-control" />
+                <span asp-validation-for="prodModel.TimeAdded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.OldPrice"  class="control-label"></label>
+                <input asp-for="prodModel.OldPrice" class="form-control" />
+                <span asp-validation-for="prodModel.OldPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.NewPrice"  class="control-label"></label>
+                <input asp-for="prodModel.NewPrice" class="form-control" />
+                <span asp-validation-for="prodModel.NewPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prodModel.Rating"  class="control-label"></label>
+                <input asp-for="prodModel.Rating" class="form-control" />
+                <span asp-validation-for="prodModel.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href ="/admin">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
