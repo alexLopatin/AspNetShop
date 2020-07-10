@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>d1590a10-26f9-420f-85ec-24a6fadd113d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
@@ -26,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Client\AspNetShop.Client.csproj" />
     <ProjectReference Include="..\Shared\AspNetShop.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\" />
   </ItemGroup>
 
 

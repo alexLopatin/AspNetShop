@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,20 @@ namespace AspNetShop.Server.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public string GetName()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public void LogOut()
+        {
+            Console.WriteLine("DIY");
         }
 
         [HttpPost]

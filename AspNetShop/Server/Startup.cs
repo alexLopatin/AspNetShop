@@ -105,11 +105,18 @@ namespace AspNetShop.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+            
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    "admin",
+                    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapFallbackToFile("index.html");
             });
         }

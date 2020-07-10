@@ -20,6 +20,7 @@ namespace AspNetShop.DummyServer.Controllers
         {
             this.dataManager = dataManager;
         }
+
         [HttpGet]
         public IEnumerable<Stock> Get()
         {

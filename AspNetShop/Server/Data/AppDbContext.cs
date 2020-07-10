@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetShop.Server.Domain
+namespace AspNetShop.Server.Data
 
 {
     public class AppDbContext : IdentityDbContext<IdentityUser>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Pages
+namespace AspNetShop.Server.Views.Admin
 {
     public class DetailsModel : PageModel
     {

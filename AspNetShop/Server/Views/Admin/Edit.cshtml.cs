@@ -4,17 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Pages
+namespace AspNetShop.Server.Views.Admin
 {
-    public class DeleteModel : PageModel
+    public class EditModel : PageModel
     {
         private readonly AspNetShop.Server.Data.AspNetShopServerContext _context;
 
-        public DeleteModel(AspNetShop.Server.Data.AspNetShopServerContext context)
+        public EditModel(AspNetShop.Server.Data.AspNetShopServerContext context)
         {
             _context = context;
         }
@@ -38,22 +39,39 @@ namespace AspNetShop.Server.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://aka.ms/RazorPagesCRUD.
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return Page();
             }
 
-            Product = await _context.Products.FindAsync(id);
+            _context.Attach(Product).State = EntityState.Modified;
 
-            if (Product != null)
+            try
             {
-                _context.Products.Remove(Product);
                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(Product.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return RedirectToPage("./Index");
+        }
+
+        private bool ProductExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

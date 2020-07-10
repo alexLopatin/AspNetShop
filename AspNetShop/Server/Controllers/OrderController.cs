@@ -6,7 +6,7 @@ using AspNetShop.Shared.ModelView;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNetShop.DummyServer.Controllers
+namespace AspNetShop.Server.Controllers
 {
     [ApiController]
     [Route("{controller}/{action=Get}")]
