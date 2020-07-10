@@ -20,6 +20,7 @@ namespace AspNetShop.Client
             builder.RootComponents.Add<App>("app");
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddScoped<IAuthProvider,AuthProvider>();
+            builder.Services.AddScoped<BrowserService>();
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
