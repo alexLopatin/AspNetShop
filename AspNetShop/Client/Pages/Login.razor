@@ -30,7 +30,9 @@
     {
         var sha1 = new SHA1CryptoServiceProvider();
         var data = Encoding.UTF8.GetBytes(unHashed);
-        model.PasswordHash = Convert.ToBase64String(sha1.ComputeHash(data));
+        //model.PasswordHash = Convert.ToBase64String(sha1.ComputeHash(data));
+        model.PasswordHash = unHashed;
+
         var response = await Http.PostAsJsonAsync("/account/login", model);
         string token = await response.Content.ReadAsStringAsync();
         await LocalStore.SetItemAsync("JWT", token);
