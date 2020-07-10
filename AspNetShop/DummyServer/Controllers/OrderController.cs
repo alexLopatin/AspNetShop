@@ -43,7 +43,6 @@ namespace AspNetShop.DummyServer.Controllers
             orders.Add(order);
             return orders.ToArray();
         }
-
         [HttpPost]
         [Authorize]
         public List<string> CreateOrder(Shared.Form.Order orderForm)
