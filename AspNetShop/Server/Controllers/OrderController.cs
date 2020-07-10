@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetShop.Server.Controllers
-{`  
+{
     [ApiController]
     [Route("{controller}/{action=Get}")]
     public class OrderController : Controller

@@ -57,7 +57,6 @@ namespace AspNetShop.DummyServer.Controllers
  
             string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
-
         }
         [AllowAnonymous]
         [HttpPost]

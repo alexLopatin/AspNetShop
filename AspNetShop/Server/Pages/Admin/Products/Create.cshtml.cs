@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Views.Admin
+namespace AspNetShop.Server.Pages.Admin
 {
     public class CreateModel : PageModel
     {
