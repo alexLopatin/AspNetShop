@@ -7,7 +7,7 @@
 <h3>Регистрация</h3>
 
 <EditForm Model="model" OnSubmit=@HandleSubmit class="login-form">
-    <p class="error-message" hidden="@(errorMessage == "")">@errorMessage</p>
+    <div class="error-message" hidden="@(errorMessage == "")">@errorMessage</div>
     <label for="Login">Логин:</label>
     <InputText id="Login" @bind-Value="model.UserName"></InputText>
     <label for="FirstName">Имя:</label>

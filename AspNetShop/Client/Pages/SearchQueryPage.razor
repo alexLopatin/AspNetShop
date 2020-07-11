@@ -1,0 +1,17 @@
+﻿@page "/srch/"
+@inject NavigationManager navMan
+<h3>Поиск товаров</h3>
+
+<p>Введите название товаров:</p>
+
+<input  type="text" @bind-value="query" />
+<button class="to-cart" @onclick="Search">Поиск</button>
+
+
+@code {
+    public string query { get; set; }
+    public void Search()
+    {
+        navMan.NavigateTo(string.Format("srch/{0}/1", query));
+    }
+}

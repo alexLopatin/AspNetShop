@@ -6,7 +6,7 @@
 @inject BrowserService Service
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu ></NavMenu>
 </div>
 
 <div class="main">
@@ -23,9 +23,9 @@
             else
             {
                 <div class="acc-link-login">
-                    <a href="@Link" >@Name</a>
+                    <a href="@Link">@Name</a>
                 </div>
-                
+
             }
         </div>
         <NavLink href="/crt" class="cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> <span class="cart-string"> @CartString </span> </NavLink>
@@ -96,7 +96,6 @@
     }
     protected override async Task OnInitializedAsync()
     {
-
         cart = await LocalStore.GetItemAsync<Dictionary<string, int>>("cart");
         CountCart = GetCount();
         cartPrice = await LocalStore.GetItemAsync<long>("cartPrice");
