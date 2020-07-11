@@ -23,7 +23,7 @@ namespace AspNetShop.Server.Pages.Admin
 
         public async Task OnGetAsync()
         {
-            Product = await _context.Products.ToListAsync();
+            Product = await _context.Product.ToListAsync();
         }
     }
 }

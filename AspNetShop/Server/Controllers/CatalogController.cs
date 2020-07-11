@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspNetShop.Shared.ModelView;
 using System.IO;
+using AspNetShop.Client.Pages;
 using AspNetShop.Server.Domain;
 
 namespace AspNetShop.Server.Controllers
@@ -68,13 +69,16 @@ namespace AspNetShop.Server.Controllers
         [HttpGet]
         public IEnumerable<Product> ShortFindProducts(string pattern)
         {
-            var rnd = new Random();
-            var list = dataManager
-                .Products.GetProducts()
-                .OrderBy(x => rnd.Next())
-                .Take(4);
+            var resultList = new List<Product>();
+            foreach (var product in dataManager.Products.GetProducts())
+            {
+                if (product.Name.Contains(pattern))
+                {
+                    resultList.Add(product);
+                }
+            }
 
-            return list.ToArray();
+            return resultList.Take(4).ToArray();
         }
 
         [HttpGet]
@@ -87,13 +91,21 @@ namespace AspNetShop.Server.Controllers
         public ProductList FindProducts(string pattern, int page)
         {
             page--;
-            var list = dataManager
-                .Products.GetProducts()
-                .AsEnumerable();
+            var resultList = new List<Product>();
+            foreach (var product in dataManager.Products.GetProducts())
+            {
+                if (product.Name.Contains(pattern))
+                {
+                    resultList.Add(product);
+                }
+            }
+
+            var list = resultList.AsEnumerable();
 
             ProductList pl = new ProductList();
-            pl.CountOfPages = (int)Math.Ceiling((double)list.Count() / CountOnPage);
+            pl.CountOfPages = (int) Math.Ceiling((double)list.Count() / CountOnPage);
             list = list.Skip(page * CountOnPage);
+
             if (list.Count() > CountOnPage)
                 list = list.Take(CountOnPage);
 

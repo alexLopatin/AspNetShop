@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Pages.Admin
+namespace AspNetShop.Server.Pages.Admin.Categories
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace AspNetShop.Server.Pages.Admin
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public Category Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +30,9 @@ namespace AspNetShop.Server.Pages.Admin
                 return NotFound();
             }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            Category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Product == null)
+            if (Category == null)
             {
                 return NotFound();
             }
@@ -48,7 +48,7 @@ namespace AspNetShop.Server.Pages.Admin
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
+            _context.Attach(Category).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace AspNetShop.Server.Pages.Admin
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(Product.Id))
+                if (!CategoryExists(Category.Id))
                 {
                     return NotFound();
                 }
@@ -69,9 +69,9 @@ namespace AspNetShop.Server.Pages.Admin
             return RedirectToPage("./Index");
         }
 
-        private bool ProductExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

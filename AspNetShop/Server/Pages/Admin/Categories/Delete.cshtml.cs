@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Pages.Admin
+namespace AspNetShop.Server.Pages.Admin.Categories
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace AspNetShop.Server.Pages.Admin
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public Category Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,9 +29,9 @@ namespace AspNetShop.Server.Pages.Admin
                 return NotFound();
             }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            Category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Product == null)
+            if (Category == null)
             {
                 return NotFound();
             }
@@ -45,11 +45,11 @@ namespace AspNetShop.Server.Pages.Admin
                 return NotFound();
             }
 
-            Product = await _context.Products.FindAsync(id);
+            Category = await _context.Categories.FindAsync(id);
 
-            if (Product != null)
+            if (Category != null)
             {
-                _context.Products.Remove(Product);
+                _context.Categories.Remove(Category);
                 await _context.SaveChangesAsync();
             }
 

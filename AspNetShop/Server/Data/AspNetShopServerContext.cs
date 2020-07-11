@@ -14,6 +14,8 @@ namespace AspNetShop.Server.Data
         {
         }
 
-        public DbSet<AspNetShop.Shared.ModelView.Product> Products { get; set; }
+        public DbSet<AspNetShop.Shared.ModelView.Product> Product { get; set; }
+
+        public DbSet<AspNetShop.Shared.ModelView.Category> Categories { get; set; }
     }
 }

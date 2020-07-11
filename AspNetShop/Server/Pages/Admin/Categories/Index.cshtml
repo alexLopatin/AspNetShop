@@ -1,0 +1,37 @@
+﻿@page
+@model AspNetShop.Server.Pages.Admin.Categories.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a href="/Admin/Categories/Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Category) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a href="/Admin/Categories/Edit" asp-route-id="@item.Id">Edit</a> |
+                <a href="/Admin/Categories/Details" asp-route-id="@item.Id">Details</a> |
+                <a href="/Admin/Categories/Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -19,12 +19,12 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
 
         public IQueryable<Product> GetProducts()
         {
-            return context.Products;
+            return context.Product;
         }
 
         public Product GetProduct(int id)
         {
-            return context.Products.FirstOrDefault(product => product.Id == id);
+            return context.Product.FirstOrDefault(product => product.Id == id);
         }
 
         public void SaveProduct(Product product)
@@ -43,7 +43,7 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
 
         public void DeleteProduct(int id)
         {
-            context.Products.Remove(new Product()
+            context.Product.Remove(new Product()
             {
                 Id = id
             });
