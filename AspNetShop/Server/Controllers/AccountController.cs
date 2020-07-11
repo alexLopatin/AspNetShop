@@ -50,7 +50,7 @@ namespace AspNetShop.Server.Controllers
         [HttpPost]
         public async Task<object> Login([FromBody] Login model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.PasswordHash, false, false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.PasswordHash, model.RememberMe, false);
 
             if (result.Succeeded)
             {
@@ -62,17 +62,18 @@ namespace AspNetShop.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] Login model)
+        public async Task<object> Register([FromBody] Register model)
         {
             var user = new IdentityUser
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Email = model.Email,
             };
-            var result = await _userManager.CreateAsync(user, model.PasswordHash);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
+                await _signInManager.SignInAsync(user, model.RememberMe);
                 return await GenerateJwtToken(model.UserName, user);
             }
 
@@ -101,26 +102,6 @@ namespace AspNetShop.Server.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public class LoginDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            public string Password { get; set; }
-
-        }
-
-        public class RegisterDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
-            public string Password { get; set; }
         }
     }
 }
