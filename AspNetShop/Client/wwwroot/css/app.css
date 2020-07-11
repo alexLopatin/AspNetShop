@@ -462,6 +462,10 @@ summary:focus {
     padding: 10px;
 }
 
+app {
+    height: 100%;
+}
+
 .footer {
     display: flex;
     flex: 1;
@@ -557,4 +561,16 @@ summary:focus {
         margin-left:33%;
         margin-right:33%;
     }
+}
+
+.error-message {
+    background-color: darkred;
+    color: white;
+    font-size: 22px;
+    padding: 5px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: black;
+    max-width:100px;
 }

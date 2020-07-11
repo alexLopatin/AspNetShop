@@ -1,36 +1,44 @@
 ﻿@page "/acc/register"
 @inject HttpClient Http
 @inject ILocalStorageService LocalStore
+@inject NavigationManager navMan
 @using System.Text;
 @using System.Security.Cryptography;
 <h3>Регистрация</h3>
 
 <EditForm Model="model" OnSubmit=@HandleSubmit class="login-form">
+    <p class="error-message" hidden="@(errorMessage == "")">@errorMessage</p>
     <label for="Login">Логин:</label>
     <InputText id="Login" @bind-Value="model.UserName"></InputText>
     <label for="FirstName">Имя:</label>
-    <InputText id="FirstName" @bind-Value="model.UserName"></InputText>
+    <InputText id="FirstName" @bind-Value="model.FirstName"></InputText>
     <label for="SecondName">Фамилия:</label>
-    <InputText id="SecondName" @bind-Value="model.UserName"></InputText>
+    <InputText id="SecondName" @bind-Value="model.SecondName"></InputText>
     <label for="Email">Почта:</label>
-    <InputText id="Email" @bind-Value="model.UserName"></InputText>
+    <InputText id="Email" @bind-Value="model.Email"></InputText>
     <label for="Password">Пароль:</label>
 
-    <InputText id="Password" @bind-Value="unHashed" type="password"></InputText>
+    <InputText id="Password" @bind-Value="model.Password" type="password"></InputText>
     <button type="submit">Зарегистрироваться</button>
 </EditForm>
 
 @code {
-    private string unHashed { get; set; } = "";
-    private AspNetShop.Shared.Form.Login model = new AspNetShop.Shared.Form.Login();
+    private AspNetShop.Shared.Form.Register model = new AspNetShop.Shared.Form.Register();
+    private string errorMessage = "";
     private async Task HandleSubmit()
     {
-        var sha1 = new SHA1CryptoServiceProvider();
-        var data = Encoding.UTF8.GetBytes(unHashed);
-        model.PasswordHash = Convert.ToBase64String(sha1.ComputeHash(data));
-        var response = await Http.PostAsJsonAsync("/account/login", model);
-        string token = await response.Content.ReadAsStringAsync();
-        await LocalStore.SetItemAsync("JWT", token);
+        var response = await Http.PostAsJsonAsync("/account/register", model);
+        var answer = await response.Content.ReadFromJsonAsync<List<string>>();
+        if(answer[0] == "OK")
+        {
+            var token = answer[1];
+            await LocalStore.SetItemAsync("JWT", token);
+            navMan.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = answer[1];
+        }
     }
 
 }
