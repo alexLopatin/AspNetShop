@@ -174,17 +174,21 @@ app {
 
 #slider {
     position: relative;
-    overflow:hidden;
+    overflow: hidden;
     margin: 20px auto 0 auto;
     border-radius: 14px;
     display: inline-block;
     clear: both;
+    max-width: 80%;
+    max-height: 60%;
     z-index: 10;
 }
 
     #slider #content {
-        background-color:lightgray;
+        background-color: lightgray;
         display: inline-block;
+        max-width: 100%;
+        max-height: 100%;
     }
     #slider #content img {
         height: 100%;
@@ -296,8 +300,16 @@ a.control_next {
 }
 
 .description {
-    display:inline-block;
+    margin-top: 50px;
+    max-width: 100%;
+    display: inline-block;
+    word-wrap: break-word;
 }
+
+.description > * {
+    max-width: 100%;
+}
+
 #slider > * > *{
     z-index: 10;
 }
@@ -580,4 +592,19 @@ app {
 }
 input {
     max-width:100%;
+}
+@media (max-width:700px) {
+    .rate-cash-info {
+        float: none;
+        text-align: center;
+        border: solid;
+        border-width: 1px;
+        border-radius: 4px;
+        border-color: indigo;
+        padding:5px;
+    }
+    #slider {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
 }
