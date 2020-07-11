@@ -1,6 +1,8 @@
 ﻿<div class="search-wrapper">
     <div class="search-box">
-        <span class="oi oi-magnifying-glass" style="padding:5px 10px 0px 10px"></span>
+        <a href="/ord">
+            <span class="oi oi-magnifying-glass" style="padding:5px 10px 0px 10px"></span>
+        </a>
         <input type="text" @bind-value:event="oninput" @bind-value="TextProperty" @onkeydown="UpdateValue" @onfocusout="FocusOut" @onfocusin="FocusIn" placeholder="Поиск товара">
     </div>
     @if (foundProducts != null)

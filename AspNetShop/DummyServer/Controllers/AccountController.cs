@@ -60,7 +60,7 @@ namespace AspNetShop.DummyServer.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public string Register(AspNetShop.Shared.Form.Login viewModel)
+        public List<string> Register(AspNetShop.Shared.Form.Register viewModel)
         {
             var claims = new Claim[]
             {
@@ -78,7 +78,7 @@ namespace AspNetShop.DummyServer.Controllers
                     SecurityAlgorithms.HmacSha256));
 
             string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwtToken;
+            return new List<string>(2) {"ERROR", jwtToken };
 
         }
     }

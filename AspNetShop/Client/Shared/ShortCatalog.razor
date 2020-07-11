@@ -1,4 +1,4 @@
-﻿
+﻿@inject NavigationManager navMan
 @if (Products != null)
 {
 <div class="short-container">
@@ -8,7 +8,7 @@
     }
     @foreach (Product p in Products)
     {
-        <div class="product-short short-view">
+        <div class="product-short short-view" @onclick=@(() => navMan.NavigateTo(String.Format("/prod/{0}", p.Id)))>
             <NavLink href="@{String.Format("/prod/{0}", p.Id)}" Match="NavLinkMatch.All"><p>@p.Name</p></NavLink>
             <div class="rating">
                 @for (int i = 0; i < p.Rating; i++)

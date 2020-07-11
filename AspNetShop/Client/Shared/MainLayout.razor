@@ -3,6 +3,7 @@
 @inject IAuthProvider AuthProvider
 @inject HttpClient Http
 @inject NavigationManager navMan
+@inject BrowserService Service
 
 <div class="sidebar">
     <NavMenu />
@@ -16,11 +17,18 @@
             @if (LoggedIn)
             {
                 <a href="/" class="log-out" @onclick="(() => AuthProvider.LogOut(Http))">выйти</a>
+                <a href="@Link" class="orders-link-short">Заказы</a>
+                <a href="@Link" class="acc-link-short">@Name</a>
             }
-
-            <a href="@Link">@Name</a>
+            else
+            {
+                <div class="acc-link-login">
+                    <a href="@Link" >@Name</a>
+                </div>
+                
+            }
         </div>
-        <NavLink href="/crt" class="cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> @CartString </NavLink>
+        <NavLink href="/crt" class="cart-link" Match="NavLinkMatch.All"><span class="oi oi-cart"></span> <span class="cart-string"> @CartString </span> </NavLink>
 
 
     </div>
@@ -32,24 +40,15 @@
     {
 
 
-        <div class="footer px-4">
-            <table>
-                <tr>
-                    <td>КОМПАНИЯ</td>
-                    <td>ПОМОЩЬ</td>
-                    <td>ОБСЛУЖИВАНИЕ</td>
-                    <td>РАЗНОЕ</td>
-                </tr>
-                <tr>
-                    <td><a href="#">Новости</a></td>
-                    <td><a href="#">Обратная связь</a></td>
-                    <td><a href="#">Сервисные центры</a></td>
-                    <td><a href="#">Акции</a></td>
-                </tr>
-            </table>
-        </div>
+<div class="footer px-4">
+    <div class="footer-block"><p>КОМПАНИЯ</p> <a href="#">Новости</a></div>
+    <div class="footer-block"><p>ПОМОЩЬ</p> <a href="#">Обратная связь</a></div>
+    <div class="footer-block"><p>ОБСЛУЖИВАНИЕ</p> <a href="#">Сервисные центры</a></div>
+    <div class="footer-block"><p>РАЗНОЕ</p> <a href="#">Акции</a></div>
+</div>
     }
 </div>
+
 
 @code {
     private Dictionary<string, int> cart;
@@ -92,7 +91,7 @@
         {
             LoggedIn = false;
             Name = "Войти | Зарегистрироваться";
-            Link = "/acc/login/" + Uri.EscapeDataString( navMan.Uri);
+            Link = "/acc/login/" + Uri.EscapeDataString(navMan.Uri);
         }
     }
     protected override async Task OnInitializedAsync()
