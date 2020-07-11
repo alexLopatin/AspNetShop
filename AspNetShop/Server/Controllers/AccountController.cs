@@ -62,31 +62,30 @@ namespace AspNetShop.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] RegisterDto model)
+        public async Task<object> Register([FromBody] Login model)
         {
             var user = new IdentityUser
             {
-                UserName = model.Email,
-                Email = model.Email
+                UserName = model.UserName
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
 
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return await GenerateJwtToken(model.Email, user);
+                return await GenerateJwtToken(model.UserName, user);
             }
 
             throw new ApplicationException("UNKNOWN_ERROR");
         }
 
-        private async Task<object> GenerateJwtToken(string email, IdentityUser user)
+        private async Task<object> GenerateJwtToken(string username, IdentityUser user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.UserName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));

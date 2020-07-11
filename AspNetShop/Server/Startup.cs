@@ -103,13 +103,15 @@ namespace AspNetShop.Server
             }
 
             app.UseAuthentication();
+            
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

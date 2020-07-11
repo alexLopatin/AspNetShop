@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AspNetShop.Server.Data;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.Server.Pages.Admin
+namespace AspNetShop.Server.Pages.Admin.Categories
 {
     public class CreateModel : PageModel
     {
@@ -25,7 +25,7 @@ namespace AspNetShop.Server.Pages.Admin
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public Category Category { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -36,7 +36,7 @@ namespace AspNetShop.Server.Pages.Admin
                 return Page();
             }
 
-            _context.Products.Add(Product);
+            _context.Categories.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

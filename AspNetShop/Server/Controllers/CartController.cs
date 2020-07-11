@@ -6,7 +6,7 @@ using AspNetShop.Server.Domain;
 using Microsoft.AspNetCore.Mvc;
 using AspNetShop.Shared.ModelView;
 
-namespace AspNetShop.DummyServer.Controllers
+namespace AspNetShop.Server.Controllers
 {
     [ApiController]
     [Route("{controller}/{action=Get}")]
