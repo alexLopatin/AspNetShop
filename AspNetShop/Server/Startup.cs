@@ -37,6 +37,7 @@ namespace AspNetShop.Server
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddTransient<ICategoryRepository, EFCategoryRepository>();
             services.AddTransient<IStockRepository, EFStockRepository>();
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
             services.AddTransient<DataManager>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
@@ -45,7 +46,11 @@ namespace AspNetShop.Server
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts =>
             {
-                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequireDigit = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequiredLength = 1;
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

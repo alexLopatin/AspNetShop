@@ -3,52 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetShop.Server.Data;
+using AspNetShop.Server.Domain.Entities;
 using AspNetShop.Server.Domain.Repositories.Abstract;
 using AspNetShop.Shared.ModelView;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetShop.Server.Domain.Repositories.EntityFramework
 {
-    public class EFProductRepository : IProductRepository
-    {
-        private AppDbContext context;
-        public EFProductRepository(AppDbContext context)
-        {
-            this.context = context;
-        }
+	public class EFProductRepository : IProductRepository
+	{
+		private AppDbContext context;
+		public EFProductRepository(AppDbContext context)
+		{
+			this.context = context;
+		}
 
-        public IQueryable<Product> GetProducts()
-        {
-            return context.Product;
-        }
+		public IQueryable<ProductEntity> GetProducts()
+		{
+			return context.Product;
+		}
 
-        public Product GetProduct(int id)
-        {
-            return context.Product.FirstOrDefault(product => product.Id == id);
-        }
-
-        public void SaveProduct(Product product)
-        {
-            if (product.Id == default)
+		public List<Product> GetProductsModel()
+		{
+			var list = new List<Product>();
+            foreach (var productEntity in context.Product)
             {
-                context.Entry(product).State = EntityState.Added;
-            }
-            else
-            {
-                context.Entry(product).State = EntityState.Modified;
+                list.Add(productEntity.ToProduct());
             }
 
-            context.SaveChanges();
+            return list;
         }
 
-        public void DeleteProduct(int id)
-        {
-            context.Product.Remove(new Product()
-            {
-                Id = id
-            });
+		public ProductEntity GetProduct(int id)
+		{
+			return context.Product.FirstOrDefault(product => product.Id == id);
+		}
 
-            context.SaveChanges();
-        }
-    }
+		public void SaveProduct(ProductEntity product)
+		{
+			if (product.Id == default)
+			{
+				context.Entry(product).State = EntityState.Added;
+			}
+			else
+			{
+				context.Entry(product).State = EntityState.Modified;
+			}
+
+			context.SaveChanges();
+		}
+
+		public void DeleteProduct(int id)
+		{
+			context.Product.Remove(new ProductEntity()
+			{
+				Id = id
+			});
+
+			context.SaveChanges();
+		}
+	}
 }

@@ -12,12 +12,14 @@ namespace AspNetShop.Server.Domain
         public IProductRepository Products { get; set; }
         public IStockRepository Stocks { get; set; }
         public ICategoryRepository Categories { get; set; }
+        public IOrderRepository Orders { get; set; }
 
-        public DataManager(IProductRepository products, IStockRepository stocks, ICategoryRepository categories)
+        public DataManager(IProductRepository products, IStockRepository stocks, ICategoryRepository categories, IOrderRepository orders)
         {
             Products = products;
             Stocks = stocks;
             Categories = categories;
+            Orders = orders;
         }
     }
 }

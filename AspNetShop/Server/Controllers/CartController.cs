@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetShop.Server.Domain;
+using AspNetShop.Server.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using AspNetShop.Shared.ModelView;
 
@@ -17,10 +18,21 @@ namespace AspNetShop.Server.Controllers
         {
             this.dataManager = dataManager;
         }
+
         [HttpPost]
         public IEnumerable<Product> Get(Dictionary<string,int> products)
         {
-            return dataManager.Products.GetProducts();
+            var list = new List<Product>();
+            foreach (var product in products) {
+                foreach (var prod in dataManager.Products.GetProducts())
+                {
+                    if (prod.Id == int.Parse(product.Key)) {
+                        list.Add(prod.ToProduct());
+                    }
+                }
+            }
+            
+            return list;
         }
     }
 }

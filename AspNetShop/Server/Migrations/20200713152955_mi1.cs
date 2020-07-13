@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AspNetShop.Server.Migrations
 {
-    public partial class CreateAspNetShopDb : Migration
+    public partial class mi1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,6 +60,22 @@ namespace AspNetShop.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DeliveryType = table.Column<int>(nullable: false),
+                    DeliveryTypeOption = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    PaymentType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -76,21 +92,21 @@ namespace AspNetShop.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Product", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    StockId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(nullable: true),
                     Banner = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stocks", x => x.Id);
+                    table.PrimaryKey("PK_Stocks", x => x.StockId);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,15 +215,39 @@ namespace AspNetShop.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderProductEntity",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProductEntity", x => new { x.OrderId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_OrderProductEntity_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderProductEntity_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7B0F0974-3D3F-46A5-9746-BDB67BC1A02C", "dc7841b0-484f-4e8d-a4c8-02f4e4bf3257", "admin", "ADMIN" });
+                values: new object[] { "7B0F0974-3D3F-46A5-9746-BDB67BC1A02C", "48c9740c-a33b-406a-ab52-92c8785c639e", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "ECA95B36-8412-4966-83B4-54BACEB31A35", 0, "e8561927-02aa-4c20-bed8-48fee722ebbe", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEEIax5CW6Ov+Hvu+4s6KJk1tbSB486AeJ4WA3/abe0pPO+zYEA9Wca9/dGklANsu/A==", null, false, "0ccb8d9a-0116-454d-b822-377b045c2a5b", false, "admin" });
+                values: new object[] { "ECA95B36-8412-4966-83B4-54BACEB31A35", 0, "982475b0-9e94-4f34-bb20-ee7e081e67d6", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEJcmVwU11bg/PfmuABpVFVAxVQYF6/9C4oa2KG/XbSmFt+J/xUbDiswDBQ5gN0PdTg==", null, false, "01f2a542-d1f8-4768-97e6-c8ac8d446211", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -252,6 +292,11 @@ namespace AspNetShop.Server.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProductEntity_ProductId",
+                table: "OrderProductEntity",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -275,7 +320,7 @@ namespace AspNetShop.Server.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "OrderProductEntity");
 
             migrationBuilder.DropTable(
                 name: "Stocks");
@@ -285,6 +330,12 @@ namespace AspNetShop.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Product");
         }
     }
 }

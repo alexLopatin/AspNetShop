@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspNetShop.Server.Domain.Entities;
 using AspNetShop.Shared.ModelView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetShop.Server.Data
+namespace AspNetShop.Server.Domain
 
 {
     public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
-        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductEntity> Product { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<OrderEntity> Order { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,6 +47,23 @@ namespace AspNetShop.Server.Data
                 RoleId = "7B0F0974-3D3F-46A5-9746-BDB67BC1A02C",
                 UserId = "ECA95B36-8412-4966-83B4-54BACEB31A35"
             });
+
+            builder.Entity<OrderProductEntity>()
+                .HasKey(t => new { t.OrderId, t.ProductId });
+
+            builder.Entity<OrderProductEntity>()
+                .HasOne(op => op.Order)
+                .WithMany(o => o.OrderProduct)
+                .HasForeignKey(op => op.OrderId);
+
+            builder.Entity<OrderProductEntity>()
+                .HasOne(op => op.Product)
+                .WithMany(p => p.OrderProduct)
+                .HasForeignKey(op => op.ProductId);
+
+            builder.Entity<OrderEntity>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

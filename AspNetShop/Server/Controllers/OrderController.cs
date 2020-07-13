@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetShop.Server.Domain;
+using AspNetShop.Server.Domain.Entities;
 using AspNetShop.Shared.ModelView;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,13 @@ namespace AspNetShop.Server.Controllers
     [Route("{controller}/{action=Get}")]
     public class OrderController : Controller
     {
+        private DataManager dataManager;
+
+        public OrderController(DataManager dataManager)
+        {
+            this.dataManager = dataManager;
+        }
+
         //список заказов пользователя
         [HttpGet]
         [Authorize]
@@ -48,8 +57,32 @@ namespace AspNetShop.Server.Controllers
         [Authorize]
         public List<string> CreateOrder(Shared.Form.Order orderForm)
         {
-            //OK - номер заказа, в ином случае ERROR - текст ошибки.    
-            return new List<string>() { "OK", "4"};
+            //OK - номер заказа, в ином случае ERROR - текст ошибки.  
+            if (orderForm == null) {
+                return new List<string>() { "ERROR", "orderForm = null" };
+            }
+            Random random = new Random();
+
+            var order = new OrderEntity
+            {
+                Address = orderForm.Address,
+                DeliveryType = orderForm.DeliveryType,
+                DeliveryTypeOption = orderForm.DeliveryTypeOption,
+                PaymentType = orderForm.PaymentType,
+                OrderNumber = random.Next(100000, 999999)
+            };
+            
+            foreach(var prod in orderForm.Products) {
+                order.OrderProduct.Add(new OrderProductEntity {
+                    OrderId = order.Id,
+                    ProductId = prod.ProductId
+                });
+            }
+
+            dataManager.Orders.SaveOrder(order);
+
+            
+            return new List<string>() { "OK", order.OrderNumber.ToString() };
         }
     }
 }
