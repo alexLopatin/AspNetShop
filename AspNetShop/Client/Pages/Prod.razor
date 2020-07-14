@@ -69,7 +69,8 @@
     protected override async Task OnParametersSetAsync()
     {
         p = await Http.GetFromJsonAsync<Product>(String.Format("Catalog/GetProduct?id={0}", id));
-        description = await Http.GetStringAsync(String.Format("Catalog/GetProductDescription?id={0}", id));
+        //description = await Http.GetStringAsync(String.Format("Catalog/GetProductDescription?id={0}", id));
+        description = p.Description;
         newPrice = p.NewPrice;
         oldPrice = p.OldPrice;
         images = await Http.GetFromJsonAsync<string[]>(String.Format("Catalog/GetImagesProduct?id={0}", p.Id));

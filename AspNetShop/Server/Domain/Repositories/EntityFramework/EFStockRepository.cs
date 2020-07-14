@@ -19,7 +19,7 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
 
         public IQueryable<Stock> GetStocks()
         {
-            return context.Stocks;
+            return context.Stock;
         }
     }
 }

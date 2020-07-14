@@ -13,5 +13,7 @@ namespace AspNetShop.Server.Domain.Entities
         
         public int ProductId { get; set; }
         public ProductEntity Product { get; set; }
+
+        public int CountProduct { get; set; }
     }
 }

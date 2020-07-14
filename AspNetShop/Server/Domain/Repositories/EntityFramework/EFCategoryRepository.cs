@@ -19,7 +19,7 @@ namespace AspNetShop.Server.Domain.Repositories.EntityFramework
 
         public IQueryable<Category> GetCategories()
         {
-            return context.Categories;
+            return context.Category;
         }
     }
 }

@@ -35,8 +35,14 @@ namespace AspNetShop.Server.Migrations
                     b.Property<int>("DeliveryTypeOption")
                         .HasColumnType("int");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -106,7 +112,7 @@ namespace AspNetShop.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("AspNetShop.Shared.ModelView.Stock", b =>
@@ -124,7 +130,7 @@ namespace AspNetShop.Server.Migrations
 
                     b.HasKey("StockId");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stock");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -157,7 +163,7 @@ namespace AspNetShop.Server.Migrations
                         new
                         {
                             Id = "7B0F0974-3D3F-46A5-9746-BDB67BC1A02C",
-                            ConcurrencyStamp = "48c9740c-a33b-406a-ab52-92c8785c639e",
+                            ConcurrencyStamp = "597c7d3c-ecd9-479e-ad08-18c836630d2d",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -256,15 +262,15 @@ namespace AspNetShop.Server.Migrations
                         {
                             Id = "ECA95B36-8412-4966-83B4-54BACEB31A35",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "982475b0-9e94-4f34-bb20-ee7e081e67d6",
+                            ConcurrencyStamp = "682015fd-82a5-40e1-a9a5-19d6a3421c0f",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJcmVwU11bg/PfmuABpVFVAxVQYF6/9C4oa2KG/XbSmFt+J/xUbDiswDBQ5gN0PdTg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECKRXKrQ2Ksa1939CeqULSuiTDIX7h6YTg+lW4XJX3J/j/7rV3OlJMUovonYgTq0JQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "01f2a542-d1f8-4768-97e6-c8ac8d446211",
+                            SecurityStamp = "63c6b302-0a65-4874-8b2c-74c9898898e7",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

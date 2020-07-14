@@ -11,8 +11,8 @@ namespace AspNetShop.Server.Domain
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
         public DbSet<ProductEntity> Product { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Stock> Stock { get; set; }
         public DbSet<OrderEntity> Order { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -9,6 +9,7 @@ namespace AspNetShop.Server.Domain.Repositories.Abstract
 {
     public interface IOrderRepository
     {
-        public void SaveOrder(OrderEntity order);
+        public void SaveOrder(OrderEntity order, Shared.Form.Order orderForm);
+        public IEnumerable<OrderEntity> GetUserOrders(Guid userId);
     }
 }

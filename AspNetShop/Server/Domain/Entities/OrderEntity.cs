@@ -15,6 +15,7 @@ namespace AspNetShop.Server.Domain.Entities
 		public string Address { get; set; }
 		public int PaymentType { get; set; }
 		public int OrderNumber { get; set; }
+        public Guid UserId { get; set; }
 		public List<OrderProductEntity> OrderProduct { get; set; }
 
 		public OrderEntity()
