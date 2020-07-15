@@ -284,7 +284,8 @@ a.control_next {
     float: right;
 }
 .product-name {
-
+    display:block;
+    width:70%;
     float: left;
 }
 .rate-cash-info strike {
@@ -419,6 +420,7 @@ a.control_next {
     margin-right: auto;
     margin-left: auto;
     max-width: 800px;
+    margin:5px;
 }
 .full-order > summary > .states {
     color: indigo;
