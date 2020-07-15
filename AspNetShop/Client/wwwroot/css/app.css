@@ -524,7 +524,11 @@ app {
     display: none;
 }
 @media (max-width: 767.98px) {
-
+    .product-name {
+        width:100%;
+        display: block;
+        float: left;
+    }
     .main .top-row:not(.auth) {
         /*display: none;*/
     }
@@ -609,4 +613,12 @@ input {
         margin-left: 5%;
         margin-right: 5%;
     }
+}
+
+.product-short > img {
+    max-height:100%;
+    max-width:100%;
+}
+.product-short > a > p {
+    line-height:20px;
 }
